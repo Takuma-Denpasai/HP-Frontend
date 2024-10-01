@@ -55,7 +55,7 @@ export default function Top() {
 							</Link>
 						</div>
 						<Link href={"/news"}>
-							<p className="text-center text-white hover:text-gray-200 transition dulation-100">お知らせ一覧 ></p>
+							<p className="text-center text-white hover:text-gray-200 transition dulation-100">お知らせ一覧</p>
 						</Link>
 					</div>
 					<div className="mx-3.5 my-10">
@@ -73,7 +73,7 @@ export default function Top() {
 							</div>
 						</div>
 						<Link href={"/shop"}>
-							<p className="text-center text-white hover:text-gray-200 transition dulation-100">模擬店一覧 ></p>
+							<p className="text-center text-white hover:text-gray-200 transition dulation-100">模擬店一覧</p>
 						</Link>
 					</div>
 					<div className="mx-3.5 my-10">
@@ -94,7 +94,7 @@ export default function Top() {
 							</Link>
 						</div>
 						<Link href={"/event"}>
-							<p className="text-center text-white hover:text-gray-200 transition dulation-100">イベント一覧 ></p>
+							<p className="text-center text-white hover:text-gray-200 transition dulation-100">イベント一覧</p>
 						</Link>
 					</div>
 				</div>
