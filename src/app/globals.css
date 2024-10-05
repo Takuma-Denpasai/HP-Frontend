@@ -20,6 +20,10 @@ body {
   background-color: gray;
 }
 
+main {
+  min-height: 78vh;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

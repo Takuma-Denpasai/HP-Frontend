@@ -1,14 +1,60 @@
+"use client";
+
 import { ImportantNews } from "@/components/ImportantNews";
+import { useState, useEffect } from "react";
+import { Loading } from "@/components/Loading";
 import Link from "next/link";
+import Cookies from 'js-cookie';
+import { set } from "react-hook-form";
 
 export default function Top() {
+	const [newsData, setNewsData] = useState([]);
+	const [eventData, setEventData] = useState([]);
+	const [newsLoading, setNewsLoading] = useState(true);
+	const [eventLoading, setEventLoading] = useState(true);
+	const newsApiUrl = process.env.NEXT_PUBLIC_API_URL + '/news?top=true';
+	const eventApiUrl = process.env.NEXT_PUBLIC_API_URL + '/event?top=true';
+	const csrftoken = Cookies.get('csrftoken') || '';
 
-	const images: string[] = [ "/next.svg", "/vercel.svg" ];
+	const fetchNews = async () => {
+			const response = await fetch(newsApiUrl, {
+					method: 'GET',
+					headers: {
+							'Content-Type': 'application/json',
+							'X-CSRFToken': csrftoken,
+					},
+			});
+			const contentType = response.headers.get('content-type');
+			if (contentType && contentType.includes('application/json')) {
+					const data = await response.json();
+					setNewsData(data['news']);
+			}
+			setNewsLoading(false);
+	};
+	const fetchEvent = async () => {
+		const response = await fetch(eventApiUrl, {
+				method: 'GET',
+				headers: {
+						'Content-Type': 'application/json',
+						'X-CSRFToken': csrftoken,
+				},
+		});
+		const contentType = response.headers.get('content-type');
+		if (contentType && contentType.includes('application/json')) {
+				const data = await response.json();
+				setEventData(data['event']);
+		}
+		setEventLoading(false);
+};
+
+	useEffect(() => {
+			fetchNews(); // 関数を呼び出す
+			fetchEvent();
+	}, []); // コンポーネントのマウント時に実行
 
 	return (
-		<>
-			<ImportantNews />
 			<main>
+				<ImportantNews />
 				<h1 className="text-white font-bold text-center my-20 text-xl text-shadow-md mb-32 h-96f">
 					<p className="my-5">香川高等専門学校</p>
 					<p className="my-5">詫間キャンパス</p>
@@ -18,14 +64,14 @@ export default function Top() {
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 container mx-auto">
 					<div className="mx-3.5 my-10">
 						<div className="container mx-auto text-white">
-							<h2 className="text-2xl font-bold text-shadow-md">
+							<h2 className="text-3xl font-light text-shadow-md">
 							Theme
 							</h2>
-							<p className="text-sm mb-4">
+							<p className="text-xs mb-4 mt-1">
 							今年のテーマ
 							</p>
 						</div>
-						<div className="container mx-auto text-xl">
+						<div className="container mx-auto text-base">
 							<div className="w-full p-4 bg-white flex justify-between rounded-lg">
 								<p>電波事変</p>
 							</div>
@@ -33,26 +79,28 @@ export default function Top() {
 					</div>
 					<div className="mx-3.5 my-10">
 						<div className="container mx-auto text-white">
-							<h2 className="text-2xl font-bold text-shadow-md">
+							<h2 className="text-3xl font-light text-shadow-md">
 							News
 							</h2>
-							<p className="text-sm mb-4">
+							<p className="text-xs mb-4 mt-1">
 							運営からのお知らせ
 							</p>
 						</div>
-						<div className="container mx-auto text-xl">	
-							<Link href={"/news/2"}>
+						<div className="container mx-auto text-xl">
+							{newsLoading ? <Loading /> :
+							newsData.length > 0 ?
+							newsData.map((news) => (
+							<Link key={news['id']} href={`/news/${news['id']}`}>
 								<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100">
-									<p className="text-xs my-1.5">2024年10月26日</p>
-									<h3 className="">催し物プログラムを公開しました</h3>
+									<p className="text-xs my-1.5 text-gray-700">{new Date(news['created_at']).toLocaleDateString('ja-JP')}</p>
+									<h3 className="text-base">{news['title']}</h3>
 								</div>
 							</Link>
-							<Link href={"/news/2"}>
-								<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100">
-									<p className="text-xs my-1.5">2024年10月25日</p>
-									<h3 className="">公式Webサイトを公開しました</h3>
+							))
+							: <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100">
+								<p className="text-base">お知らせはありません</p>
 								</div>
-							</Link>
+							}
 						</div>
 						<Link href={"/news"}>
 							<p className="text-center text-white hover:text-gray-200 transition dulation-100">お知らせ一覧</p>
@@ -60,16 +108,16 @@ export default function Top() {
 					</div>
 					<div className="mx-3.5 my-10">
 						<div className="container mx-auto text-white">
-							<h2 className="text-2xl font-bold text-shadow-md">
+							<h2 className="text-3xl font-light text-shadow-md">
 							Shop
 							</h2>
-							<p className="text-sm mb-4">
+							<p className="text-xs mb-4 mt-1">
 							模擬店情報
 							</p>
 						</div>
 						<div className="container mx-auto text-xl">	
 							<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100">
-								<p className="">模擬店情報は<br />下記リンクよりご覧ください</p>
+								<p className="text-base">模擬店情報は下記リンクよりご覧ください</p>
 							</div>
 						</div>
 						<Link href={"/shop"}>
@@ -78,20 +126,27 @@ export default function Top() {
 					</div>
 					<div className="mx-3.5 my-10">
 						<div className="container mx-auto text-white">
-							<h2 className="text-2xl font-bold text-shadow-md">
+							<h2 className="text-3xl font-light text-shadow-md">
 							Event
 							</h2>
-							<p className="text-sm mb-4">
+							<p className="text-xs mb-4 mt-1">
 							イベント情報
 							</p>
 						</div>
 						<div className="container mx-auto text-xl">	
-							<Link href={"/event/2"}>
+							{eventLoading ? <Loading /> :
+							eventData.length > 0 ?
+							eventData.map((event) => (
+							<Link key={event['id']} href={`/event/${event['id']}`}>
 								<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100">
-									<p className="text-xs my-1.5">2024年11月1日 午後6時00分~　<span className="text-green-500">● 進行中</span></p>
-									<h3 className="">ビンゴ大会 <span className="text-gray-700">@第2体育館</span></h3>
+									<p className="text-xs my-1.5">{new Date(event['start']).toLocaleTimeString('ja-JP')}~　<span className="text-green-500">● 進行中</span></p>
+									<h3 className="text-base">{event['title']} <span className="text-gray-600">{event['place']}</span></h3>
 								</div>
 							</Link>
+							)): <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100">
+								<p className="text-base">イベント情報はありません</p>
+								</div>
+							}
 						</div>
 						<Link href={"/event"}>
 							<p className="text-center text-white hover:text-gray-200 transition dulation-100">イベント一覧</p>
@@ -99,6 +154,5 @@ export default function Top() {
 					</div>
 				</div>
 			</main>
-		</>
 	);
 }

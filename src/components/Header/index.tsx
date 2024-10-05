@@ -1,20 +1,44 @@
 'use client'
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Header: React.FC = () => {
 
     const [openMenu, setOpenMenu] = useState(false);
+    const [loginStatus, setLoginStatus] = useState(false);
+    const [loading, setLoading] = useState(true);
     const switchMenuOpen = () => {
         setOpenMenu(!openMenu);
     }
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/is_auth';
+
+    const fetchAuth = async () => {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            const data = await response.json();
+            setLoginStatus(data['is_auth']);
+        }
+		setLoading(false);
+    };
+
+    useEffect(() => {
+        fetchAuth(); // 関数を呼び出す
+    }, []); // コンポーネントのマウント時に実行
 
     return (
         <div className="container my-4 mx-auto px-3 top-0 sticky">
             <header className="w-full p-4 bg-white flex justify-between rounded-lg border-gray-300 border">
                 <Link href={"/"}>
-                    <h1>香川高専 電波祭</h1>
+                    <h1 className="text-lg">香川高専 電波祭</h1>
                 </Link>
 
                 <button 
@@ -77,6 +101,31 @@ export const Header: React.FC = () => {
                                 <p className="text-xs text-gray-500">イベント情報</p>
                             </Link>
                         </li>
+                        {loginStatus ? (
+                            <>
+                                <li className="my-4">
+                                    <Link href={"/mypage"}>
+                                        <p className="text-3xl font-thin my-1">My Page</p>
+                                        <p className="text-xs text-gray-500">マイページ</p>
+                                    </Link>
+                                </li>
+                                <li className="my-4">
+                                    <Link href={"/logout"}>
+                                        <p className="text-3xl font-thin my-1">Logout</p>
+                                        <p className="text-xs text-gray-500">ログアウト</p>
+                                    </Link>
+                                </li>
+                            </>
+                        ) : (
+                            <>
+                                <li className="my-4">
+                                    <Link href={"/login"}>
+                                        <p className="text-3xl font-thin my-1">Login</p>
+                                        <p className="text-xs text-gray-500">ログイン</p>
+                                    </Link>
+                                </li>
+                            </>
+                        )}
                     </ul>
                 </nav>
             </header>

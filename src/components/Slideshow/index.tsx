@@ -5,14 +5,14 @@ import { useState, useEffect } from "react";
 
 export const Slideshow: React.FC = () => {
 
-    const images: string[] = [ "/next.svg", "/vercel.svg" ]
+	const images: string[] = [ "/1.jpg", "/2.jpg", "/3.jpg", "/4.jpg", "/5.jpg", "/6.jpg", "/7.jpg", "/8.jpg" ];
 
     const [ currentImageIndex, setCurrentImageIndex ] = useState(0);
 
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-        }, 5000);
+        }, 7000);
         return () => clearInterval(timer);
     })
 
@@ -24,10 +24,10 @@ export const Slideshow: React.FC = () => {
                     src={image}
                     alt={`Slide ${index}`}
                     fill
-                    className={`absolute transition duration-500 ease-linear brightness-50 blur-sm ${
+                    className={`absolute transition duration-500 ease-linear brightness-50 blur-base object-cover ${
                         index === currentImageIndex ? "opacity-100" : "opacity-0"
                     }`}
-                    style={{ objectFit: 'contain' }}
+                    style={{ objectFit: 'cover' }}
                 />
             ))}
         </div>

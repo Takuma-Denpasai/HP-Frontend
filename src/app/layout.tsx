@@ -4,6 +4,12 @@ import "./globals.css";
 import { Header } from "@/components/Header"
 import { Footer } from "@/components/Footer"
 import { Slideshow } from "@/components/Slideshow"
+import { config, library } from '@fortawesome/fontawesome-svg-core'
+import '@fortawesome/fontawesome-svg-core/styles.css'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+
+library.add(fas)
+config.autoAddCss = false
 
 const inter = Inter({ subsets: ["latin"] });
 
