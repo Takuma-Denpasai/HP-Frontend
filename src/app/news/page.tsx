@@ -6,32 +6,32 @@ import { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
 import Link from "next/link";
 
-	export const News = () => {
-    const [data, setData] = useState([]);
-		const [loading, setLoading] = useState(true);
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/news';
-    const csrftoken = Cookies.get('csrftoken') || '';
+const NewsPage = () => {
+	const [data, setData] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/news';
+	const csrftoken = Cookies.get('csrftoken') || '';
 
-    const fetchNews = async () => {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-						credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken,
-            },
-        });
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-            const data = await response.json();
-            setData(data['news']);
-        }
-				setLoading(false);
-    };
+	const fetchNews = async () => {
+			const response = await fetch(apiUrl, {
+					method: 'GET',
+					credentials: 'include',
+					headers: {
+							'Content-Type': 'application/json',
+							'X-CSRFToken': csrftoken,
+					},
+			});
+			const contentType = response.headers.get('content-type');
+			if (contentType && contentType.includes('application/json')) {
+					const data = await response.json();
+					setData(data['news']);
+			}
+			setLoading(false);
+	};
 
-    useEffect(() => {
-        fetchNews(); // 関数を呼び出す
-    }, []); // コンポーネントのマウント時に実行
+	useEffect(() => {
+			fetchNews(); // 関数を呼び出す
+	}, []); // コンポーネントのマウント時に実行
 
 	return (
 		<main>
@@ -61,4 +61,4 @@ import Link from "next/link";
 	);
 }
 
-export default News;
+export default NewsPage;
