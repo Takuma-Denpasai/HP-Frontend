@@ -12,27 +12,27 @@ export default function News({ params }: { params: { id: string, user_id: string
   const [memberData, setMemberData] = useState([]);
   const [permissionData, setPermissionData] = useState([]);
   const [organizationLoading, setOrganizationLoading] = useState(true);
-  const [permission, setPermission] = useState('');
+  const [permissions, setPermissions] = useState<string[]>([]);
   const url = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/member/${params.user_id}`;
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, checked } = event.target;
+    setPermissions(prev => {
+      const updatedPermissions = checked 
+          ? [...prev, id]
+          : prev.filter(permission => permission !== id);
+      console.log(updatedPermissions);
+      return updatedPermissions;
+    });
+  }
 
   const fetchData = async () => {
     try {
-        const data = await fetchWithAuth(url, 'POST', { 'permission': permission });
+        const data = await fetchWithAuth(url, 'POST', { 'permissions': permissions });
     } catch (error) {
         console.error('データ取得エラー:', error);
     }
   };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, checked } = event.target;
-    setPermission(prev => {
-        const updatedPermissions = checked 
-            ? [...prev, id] 
-            : prev.filter(permission => permission !== id);
-        console.log(updatedPermissions);
-        return updatedPermissions;
-    });
-}
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -57,8 +57,8 @@ export default function News({ params }: { params: { id: string, user_id: string
 }, []);
 
   useEffect(() => {
-    console.log(permissionData.includes('news'));
-    console.log(permissionData.includes('shop'));
+  //   console.log(permissionData.includes('news'));
+  //   console.log(permissionData.includes('shop'));
   }, [permissionData]);
 
     return (
@@ -81,7 +81,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="news"
-                      checked={permissionData.includes('news')}
+                      // checked={permissionData.includes('news')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
@@ -91,7 +91,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="shop"
-                      defaultChecked={permissionData.includes('shop')}
+                      // defaultChecked={permissionData.includes('shop')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
@@ -101,7 +101,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="menu"
-                      defaultChecked={permissionData.includes('menu')}
+                      // defaultChecked={permissionData.includes('menu')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
@@ -111,7 +111,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="event"
-                      defaultChecked={permissionData.includes('event')}
+                      // defaultChecked={permissionData.includes('event')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
@@ -121,7 +121,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="band"
-                      defaultChecked={permissionData.includes('band')}
+                      // defaultChecked={permissionData.includes('band')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
@@ -131,7 +131,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="karaoke"
-                      defaultChecked={permissionData.includes('karaoke')}
+                      // defaultChecked={permissionData.includes('karaoke')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
@@ -141,7 +141,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="inspection"
-                      defaultChecked={permissionData.includes('inspection')}
+                      // defaultChecked={permissionData.includes('inspection')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />

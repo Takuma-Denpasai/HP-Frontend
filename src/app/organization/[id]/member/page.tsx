@@ -50,7 +50,7 @@ export default function News({ params }: { params: { id: string }}) {
                           <h3 className="text-base">{member['username']}</h3>
                           {organizationData[0]['owner_id'] === member['id'] && (<p className='text-xs mt-2'>オーガナイゼーションオーナー</p>)}
                           <p className='text-xs mt-2'>
-                            権限: {member['permissions'].length > 0 ? (Array.isArray(member['permissions']) && member['permissions'].map((permission: any) => (`${permission} `))) : ('なし')}
+                            {/* 権限: {member['permissions'].length > 0 ? (Array.isArray(member['permissions']) && member['permissions'].map((permission: any) => (`${permission} `))) : ('なし')} */}
                           </p>
                         </div>
                       </Link>
