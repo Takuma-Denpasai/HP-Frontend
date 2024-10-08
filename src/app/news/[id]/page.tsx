@@ -60,6 +60,9 @@ export default function News({ params }: { params: { id: string }}) {
                         </div>
                     </div>
 								)}
+                                <Link href={"/news"}>
+                                    <p className="text-center text-white hover:text-gray-200 transition duration-100">お知らせ一覧</p>
+                                </Link>
             </div>
         </main>
     );

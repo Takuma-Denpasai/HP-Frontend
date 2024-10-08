@@ -1,25 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
+import Cookies from "js-cookie";
 
 export default function Login() {
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/logout/';
-
-  const fetchAuth = async () => {
-      await fetch(apiUrl, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-      });
+  const logout = async () => {
+      Cookies.remove('access');
+      Cookies.remove('refresh');
       setLoading(false);
+      router.push('/login');
   };
 
   useEffect(() => {
-      fetchAuth(); // 関数を呼び出す
+      logout(); // 関数を呼び出す
   }, []); // コンポーネントのマウント時に実行
 
   return (

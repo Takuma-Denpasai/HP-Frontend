@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { Loading } from "@/components/Loading";
 import Link from "next/link";
 import Cookies from 'js-cookie';
-import { set } from "react-hook-form";
 
 export default function Top() {
 	const [newsData, setNewsData] = useState([]);
@@ -20,8 +19,7 @@ export default function Top() {
 			const response = await fetch(newsApiUrl, {
 					method: 'GET',
 					headers: {
-							'Content-Type': 'application/json',
-							'X-CSRFToken': csrftoken,
+							'Content-Type': 'application/json'
 					},
 			});
 			const contentType = response.headers.get('content-type');
@@ -91,19 +89,19 @@ export default function Top() {
 							newsData.length > 0 ?
 							newsData.map((news) => (
 							<Link key={news['id']} href={`/news/${news['id']}`}>
-								<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100">
+								<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
 									<p className="text-xs my-1.5 text-gray-700">{new Date(news['created_at']).toLocaleDateString('ja-JP')}</p>
 									<h3 className="text-base">{news['title']}</h3>
 								</div>
 							</Link>
 							))
-							: <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100">
+							: <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
 								<p className="text-base">お知らせはありません</p>
 								</div>
 							}
 						</div>
 						<Link href={"/news"}>
-							<p className="text-center text-white hover:text-gray-200 transition dulation-100">お知らせ一覧</p>
+							<p className="text-center text-white hover:text-gray-200 transition duration-100">お知らせ一覧</p>
 						</Link>
 					</div>
 					<div className="mx-3.5 my-10">
@@ -116,12 +114,12 @@ export default function Top() {
 							</p>
 						</div>
 						<div className="container mx-auto text-xl">	
-							<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100">
+							<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
 								<p className="text-base">模擬店情報は下記リンクよりご覧ください</p>
 							</div>
 						</div>
 						<Link href={"/shop"}>
-							<p className="text-center text-white hover:text-gray-200 transition dulation-100">模擬店一覧</p>
+							<p className="text-center text-white hover:text-gray-200 transition duration-100">模擬店一覧</p>
 						</Link>
 					</div>
 					<div className="mx-3.5 my-10">
@@ -138,18 +136,18 @@ export default function Top() {
 							eventData.length > 0 ?
 							eventData.map((event) => (
 							<Link key={event['id']} href={`/event/${event['id']}`}>
-								<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100">
+								<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
 									<p className="text-xs my-1.5">{new Date(event['start']).toLocaleTimeString('ja-JP')}~　<span className="text-green-500">● 進行中</span></p>
 									<h3 className="text-base">{event['title']} <span className="text-gray-600">{event['place']}</span></h3>
 								</div>
 							</Link>
-							)): <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100">
+							)): <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
 								<p className="text-base">イベント情報はありません</p>
 								</div>
 							}
 						</div>
 						<Link href={"/event"}>
-							<p className="text-center text-white hover:text-gray-200 transition dulation-100">イベント一覧</p>
+							<p className="text-center text-white hover:text-gray-200 transition duration-100">イベント一覧</p>
 						</Link>
 					</div>
 				</div>

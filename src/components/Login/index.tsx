@@ -3,6 +3,7 @@
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+import RefreshToken from '@/components/RefreshToken';
 
 export default function Login() {
 
@@ -21,36 +22,36 @@ export default function Login() {
     reValidateMode: 'onSubmit',
   });
 
+  let count: number = 0;
+
   const onSubmit = async (data: any) => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/login/';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/auth/jwt/create';
     const csrftoken = Cookies.get('csrftoken') || '';
-    await fetch(apiUrl, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrftoken,
-      },
-      body: JSON.stringify(data), 
-    }).then(response => {
+    
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify(data),
+      });
+
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
-        return response.json();
+        const responseData = await response.json();
+        Cookies.set('access', responseData['access'], { expires: 1 / 24, path: '/' });
+        Cookies.set('refresh', responseData['refresh'], { expires: 7, path: '/' });
+        router.push('/organization');
       } else {
         throw new Error('JSONではないレスポンスが返されました');
       }
-    })
-    .then(data => {
-      if (data.status) {
-        router.push('/mypage');
-      } else {
-        alert(data.msg);
-      }
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('エラー:', error);
-      alert('エラー:'+ error);
-    });
+      alert('エラー:' + error);
+    }
   };
 
   return (

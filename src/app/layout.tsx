@@ -4,17 +4,10 @@ import "./globals.css";
 import { Header } from "@/components/Header"
 import { Footer } from "@/components/Footer"
 import { Slideshow } from "@/components/Slideshow"
-import { config, library } from '@fortawesome/fontawesome-svg-core'
-import '@fortawesome/fontawesome-svg-core/styles.css'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-
-library.add(fas)
-config.autoAddCss = false
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "%s香川高専 電波祭",
+  title: "香川高専 電波祭",
   description: "香川高等専門学校 詫間キャンパス 電波祭の公式Webページです。",
 };
 

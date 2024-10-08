@@ -1,38 +1,21 @@
 'use client'
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 export const Header: React.FC = () => {
 
     const [openMenu, setOpenMenu] = useState(false);
-    const [loginStatus, setLoginStatus] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     const switchMenuOpen = () => {
         setOpenMenu(!openMenu);
     }
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/is_auth';
-
-    const fetchAuth = async () => {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-            const data = await response.json();
-            setLoginStatus(data['is_auth']);
-        }
-		setLoading(false);
-    };
-
     useEffect(() => {
-        fetchAuth(); // 関数を呼び出す
-    }, []); // コンポーネントのマウント時に実行
+        setIsLoggedIn(Cookies.get('refresh') !== undefined);
+    }, []);
 
     return (
         <div className="container my-4 mx-auto px-3 top-0 sticky">
@@ -101,12 +84,12 @@ export const Header: React.FC = () => {
                                 <p className="text-xs text-gray-500">イベント情報</p>
                             </Link>
                         </li>
-                        {loginStatus ? (
+                        {isLoggedIn ? (
                             <>
                                 <li className="my-4">
-                                    <Link href={"/mypage"}>
-                                        <p className="text-3xl font-thin my-1">My Page</p>
-                                        <p className="text-xs text-gray-500">マイページ</p>
+                                    <Link href={"/organization"}>
+                                        <p className="text-3xl font-thin my-1">Organization</p>
+                                        <p className="text-xs text-gray-500">オーガナイゼーション</p>
                                     </Link>
                                 </li>
                                 <li className="my-4">
