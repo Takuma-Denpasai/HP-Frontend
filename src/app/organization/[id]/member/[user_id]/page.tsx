@@ -2,15 +2,15 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { ImportantNews } from '@/components/ImportantNews';
 import { Loading } from '@/components/Loading';
 import { fetchWithAuth } from '@/utils/api';
+
 
 export default function News({ params }: { params: { id: string, user_id: string }}) {
 
   const [addData, setAddData] = useState(false);
   const [memberData, setMemberData] = useState([]);
-  const [permissionData, setPermissionData] = useState([]);
+  const [permissionData, setPermissionData] = useState<string[]>([]);
   const [organizationLoading, setOrganizationLoading] = useState(true);
   const [permissions, setPermissions] = useState<string[]>([]);
   const url = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/member/${params.user_id}`;
@@ -81,7 +81,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="news"
-                      // checked={permissionData.includes('news')}
+                      checked={permissionData.includes('news')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
@@ -91,7 +91,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="shop"
-                      // defaultChecked={permissionData.includes('shop')}
+                      defaultChecked={permissionData.includes('shop')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
@@ -101,7 +101,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="menu"
-                      // defaultChecked={permissionData.includes('menu')}
+                      defaultChecked={permissionData.includes('menu')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
@@ -111,7 +111,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="event"
-                      // defaultChecked={permissionData.includes('event')}
+                      defaultChecked={permissionData.includes('event')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
@@ -121,7 +121,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="band"
-                      // defaultChecked={permissionData.includes('band')}
+                      defaultChecked={permissionData.includes('band')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
@@ -131,7 +131,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="karaoke"
-                      // defaultChecked={permissionData.includes('karaoke')}
+                      defaultChecked={permissionData.includes('karaoke')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
@@ -141,7 +141,7 @@ export default function News({ params }: { params: { id: string, user_id: string
                     <input 
                       type="checkbox"
                       id="inspection"
-                      // defaultChecked={permissionData.includes('inspection')}
+                      defaultChecked={permissionData.includes('inspection')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
