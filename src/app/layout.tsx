@@ -5,6 +5,7 @@ import HeaderWrapper from "@/components/HeaderWrapper"
 import { Footer } from "@/components/Footer"
 import { Slideshow } from "@/components/Slideshow"
 const inter = Inter({ subsets: ["latin"] });
+import GoogleAnalytics from '@/components/GoogleAnalytics/GoogleAnalytics'
 
 export const metadata: Metadata = {
   title: "香川高専 電波祭",
@@ -18,6 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className="tracking-widest">
+      <head>
+        <GoogleAnalytics />
+      </head>
       <body className={inter.className}>
         <HeaderWrapper />
         <Slideshow />
