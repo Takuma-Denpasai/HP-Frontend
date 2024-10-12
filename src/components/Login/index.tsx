@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
@@ -98,6 +99,7 @@ export default function Login() {
               </div>
               <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'>ログイン</button>
             </form>
+            <Link href={`/register`}>アカウントをお持ちでない場合</Link>
 					</div>
         </div>
       </div>

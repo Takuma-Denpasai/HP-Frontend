@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 export const refreshAccessToken = async (): Promise<string> => {
     const refreshToken = Cookies.get('refresh');
     if (!refreshToken) {
-        alert('再ログインが必要です');
+        alert('ログインが必要です');
     }
 
     try {

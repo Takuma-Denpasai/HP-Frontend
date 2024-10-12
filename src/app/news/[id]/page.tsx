@@ -8,7 +8,8 @@ import { Loading } from '@/components/Loading';
 
 export default function News({ params }: { params: { id: string }}) {
     const [data, setData] = useState([]);
-		const [loading, setLoading] = useState(true);
+    const [status, setStatus] = useState(0);
+	const [loading, setLoading] = useState(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/news/' + params.id;
     const csrftoken = Cookies.get('csrftoken') || '';
 
@@ -25,8 +26,9 @@ export default function News({ params }: { params: { id: string }}) {
         if (contentType && contentType.includes('application/json')) {
             const data = await response.json();
             setData(data['news']);
+            setStatus(response.status);
         }
-				setLoading(false);
+		setLoading(false);
     };
 
     useEffect(() => {
@@ -48,14 +50,14 @@ export default function News({ params }: { params: { id: string }}) {
 								{loading ? (<Loading />) : (
                 <div className="container mx-auto text-xl md:w-6/12 w-full">
                         <div className="w-full p-4 bg-white rounded-lg py-6 my-4 transition duration-100">
-                            {data.length > 0 ? ( // dataが空でないことを確認
+                            {status === 200 ? ( // dataが空でないことを確認
                                 <>
                                     <p className="text-xs my-1.5 text-gray-700">{new Date(data[0]['created_at']).toLocaleDateString('ja-JP')}</p>
                                     <h3 className="text-base mb-4">{data[0]['title']}</h3>
                                     <p className='text-sm'>{data[0]['detail']}</p>
                                 </>
                             ) : (
-                                <p className="text-xs my-1.5 text-gray-700">ニュースがありません</p> // デフォルトメッセージ
+                                <p className="text-xs my-1.5 text-gray-700">指定されたニュースが見つかりませんでした</p> // デフォルトメッセージ
                             )}
                         </div>
                     </div>

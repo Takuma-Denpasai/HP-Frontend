@@ -107,6 +107,12 @@ export const Header: React.FC = () => {
                                         <p className="text-xs text-gray-500">ログイン</p>
                                     </Link>
                                 </li>
+                                <li className="my-4">
+                                    <Link href={"/register"}>
+                                        <p className="text-3xl font-thin my-1">Register</p>
+                                        <p className="text-xs text-gray-500">アカウント作成</p>
+                                    </Link>
+                                </li>
                             </>
                         )}
                     </ul>
