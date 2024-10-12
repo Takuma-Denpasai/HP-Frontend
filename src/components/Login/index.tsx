@@ -43,9 +43,13 @@ export default function Login() {
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         const responseData = await response.json();
-        Cookies.set('access', responseData['access'], { expires: 1 / 24, path: '/' });
-        Cookies.set('refresh', responseData['refresh'], { expires: 7, path: '/' });
-        router.push('/organization');
+        if (response.ok) {
+          Cookies.set('access', responseData['access'], { expires: 1 / 24, path: '/' });
+          Cookies.set('refresh', responseData['refresh'], { expires: 7, path: '/' });
+          router.push('/organization');
+        } else {
+          alert('ログインに失敗しました');
+        }
       } else {
         throw new Error('JSONではないレスポンスが返されました');
       }
