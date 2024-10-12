@@ -2,18 +2,22 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { ImportantNews } from '@/components/ImportantNews';
+import { useRouter } from 'next/navigation';
 import { Loading } from '@/components/Loading';
 import { fetchWithAuth } from '@/utils/api';
+
 
 export default function News({ params }: { params: { id: string, user_id: string }}) {
 
   const [addData, setAddData] = useState(false);
   const [memberData, setMemberData] = useState([]);
-  const [permissionData, setPermissionData] = useState([]);
   const [organizationLoading, setOrganizationLoading] = useState(true);
   const [permissions, setPermissions] = useState<string[]>([]);
+  const [organizationPermissions, setOrganizationPermissions] = useState<string[]>([]);
+  const [owner, setOwner] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   const url = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/member/${params.user_id}`;
+  const router = useRouter();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.target;
@@ -21,7 +25,6 @@ export default function News({ params }: { params: { id: string, user_id: string
       const updatedPermissions = checked 
           ? [...prev, id]
           : prev.filter(permission => permission !== id);
-      console.log(updatedPermissions);
       return updatedPermissions;
     });
   }
@@ -31,8 +34,10 @@ export default function News({ params }: { params: { id: string, user_id: string
         const data = await fetchWithAuth(url, 'POST', { 'permissions': permissions });
     } catch (error) {
         console.error('データ取得エラー:', error);
+    } finally {
+      router.push(`/organization/${params.id}/member`);
     }
-  };
+};
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -40,112 +45,132 @@ export default function News({ params }: { params: { id: string, user_id: string
   };
     
   useEffect(() => {
-		const fetchData = async () => {
-				try {
-						const data = await fetchWithAuth(url, 'GET');
+    const fetchData = async () => {
+        try {
+            const data = await fetchWithAuth(url, 'GET');
             setAddData(data['add']);
             setMemberData(data['users']);
-						setPermissionData(data['permissions']);
-				} catch (error) {
-						console.error('データ取得エラー:', error);
-				} finally {
-						setOrganizationLoading(false);
-				}
-		};
+            setPermissions(data['permissions']);
+            setOrganizationPermissions(data['organization_permissions']);
+            setOwner(data['owner']);
+            setIsOwner(data['is_owner']);
+        } catch (error) {
+            console.error('データ取得エラー:', error);
+        } finally {
+            setOrganizationLoading(false);
+        }
+    };
 
-		fetchData();
-}, []);
+    fetchData();
+  }, []);
 
-  useEffect(() => {
-  //   console.log(permissionData.includes('news'));
-  //   console.log(permissionData.includes('shop'));
-  }, [permissionData]);
-
-    return (
-        <main>
-            <div className="mx-3.5 my-10">
-								{organizationLoading ? (<Loading />) : (
-                  <>
-                    <div className="container mx-auto text-white text-center m-12">
-                        <h2 className="text-3xl font-light text-shadow-md m-3">
-                            {memberData[0]['username']}
-                        </h2>
-                        <p className="text-sm mb-4">
-                            メンバー管理
-                        </p>
-                    </div>
-                  </>
-                )}
+  return (
+    <main>
+        <div className="mx-3.5 my-10">
+            {organizationLoading ? (<Loading />) : (
+              <>
+                <div className="container mx-auto text-white text-center m-12">
+                    <h2 className="text-3xl font-light text-shadow-md m-3">
+                        {memberData[0]['username']}
+                    </h2>
+                    <p className="text-sm mb-4">
+                        メンバー管理
+                    </p>
+                </div>
                 <form onSubmit={handleSubmit}>
+                  {organizationPermissions.includes('news') && (
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
                     <input 
                       type="checkbox"
                       id="news"
-                      // checked={permissionData.includes('news')}
+                      defaultChecked={permissions.includes('news')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
                     <label> News</label>
                   </div>
+                  )}
+                  {organizationPermissions.includes('shop') && (
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
                     <input 
                       type="checkbox"
                       id="shop"
-                      // defaultChecked={permissionData.includes('shop')}
+                      defaultChecked={permissions.includes('shop')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
                     <label> Shop</label>
                   </div>
+                  )}
+                  {organizationPermissions.includes('menu') && (
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
                     <input 
                       type="checkbox"
                       id="menu"
-                      // defaultChecked={permissionData.includes('menu')}
+                      defaultChecked={permissions.includes('menu')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
                     <label> Menu</label>
                   </div>
+                  )}
+                  {organizationPermissions.includes('event') && (
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
                     <input 
                       type="checkbox"
                       id="event"
-                      // defaultChecked={permissionData.includes('event')}
+                      defaultChecked={permissions.includes('event')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
                     <label> Event</label>
                   </div>
+                  )}
+                  {organizationPermissions.includes('band') && (
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
                     <input 
                       type="checkbox"
                       id="band"
-                      // defaultChecked={permissionData.includes('band')}
+                      defaultChecked={permissions.includes('band')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
                     <label> Band</label>
                   </div>
+                  )}
+                  {organizationPermissions.includes('karaoke') && (
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
                     <input 
                       type="checkbox"
                       id="karaoke"
-                      // defaultChecked={permissionData.includes('karaoke')}
+                      defaultChecked={permissions.includes('karaoke')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
                     <label> Karaoke</label>
                   </div>
+                  )}
+                  {organizationPermissions.includes('inspection') && (
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
                     <input 
                       type="checkbox"
                       id="inspection"
-                      // defaultChecked={permissionData.includes('inspection')}
+                      defaultChecked={permissions.includes('inspection')}
                       onChange={handleInputChange}
                       disabled={!addData}
                     />
                     <label> Inspection</label>
+                  </div>
+                  )}
+                  <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
+                    <input 
+                      type="checkbox"
+                      id="invite_user"
+                      defaultChecked={permissions.includes('invite_user')}
+                      onChange={handleInputChange}
+                      disabled={!addData}
+                    />
+                    <label> Invite User</label>
                   </div>
                   {addData && (
                     <div className='text-center'>
@@ -153,7 +178,23 @@ export default function News({ params }: { params: { id: string, user_id: string
                     </div>
                   )}
                 </form>
-            </div>
-        </main>
-    );
+                {addData && !isOwner && (
+                  <Link href={`/organization/${params.id}/member/${params.user_id}/delete`} className='bg-white-100'>
+                    <p className='text-center text-red-400 text-lg my-4'>オーガナイゼーションから退会</p>
+                  </Link>
+                )}
+                {owner && !isOwner && (
+                  <Link href={`/organization/${params.id}/member/${params.user_id}/change_owner`} className='bg-white-100'>
+                    <p className='text-center text-red-400 text-lg my-4'>オーナーの譲渡</p>
+                  </Link>
+                )}
+                {addData && isOwner && <p className='text-white text-center'>オーナーは退会できません</p>}
+              </>
+            )}
+        </div>
+      <Link href={`/organization/${params.id}/member`} className='text-center'>
+        <p className='text-white'>メンバー管理へ戻る</p>
+      </Link>
+    </main>
+);
 }

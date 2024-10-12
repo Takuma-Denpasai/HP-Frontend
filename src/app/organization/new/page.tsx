@@ -14,7 +14,7 @@ export default function Top() {
       try {
           const data = await fetchWithAuth(url, 'POST', { 'name': organization });
       } catch (error) {
-          console.error('データ取得エラー:', error);
+          
       } finally {
         router.push('/organization');
       }

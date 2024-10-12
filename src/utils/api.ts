@@ -31,7 +31,7 @@ export const fetchWithAuth = async (url: string, method: string, body_data?: {})
             accessToken = await refreshAccessToken();
 
             // 再度リクエスト
-            response = await fetch(url, fetchData);
+            response = await fetchWithAuth(url, method, body_data);
         }
 
         if (!response.ok) {
