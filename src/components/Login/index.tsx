@@ -48,7 +48,7 @@ export default function Login() {
           Cookies.set('refresh', responseData['refresh'], { expires: 7, path: '/' });
           router.push('/organization');
         } else {
-          alert('ログインに失敗しました');
+          alert('ログインに失敗しました。\nユーザーネームとパスワードを確認してください。');
         }
       } else {
         throw new Error('JSONではないレスポンスが返されました');
