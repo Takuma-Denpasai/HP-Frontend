@@ -67,7 +67,8 @@ export default function Login() {
           </p>
         </div>
           <div className="container mx-auto text-xl md:w-6/12 w-full">
-              <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100 text-center"><form onSubmit={handleSubmit(onSubmit)}>
+            <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100 text-center">
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                   <input
                     placeholder="ユーザーネーム"

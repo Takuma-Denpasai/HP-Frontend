@@ -1,15 +1,23 @@
 "use client";
 
+interface News {
+    id: number;
+    title: string;
+    detail: string;
+    created_at: string;
+}
+
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import Cookies from 'js-cookie';
 import { ImportantNews } from '@/components/ImportantNews';
 import { Loading } from '@/components/Loading';
 
 export default function News({ params }: { params: { id: string }}) {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<News[]>([]);
     const [status, setStatus] = useState(0);
 	const [loading, setLoading] = useState(true);
+    const [formattedDescription, setFormattedDescription] = useState<JSX.Element[] | null>(null);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/news/' + params.id;
     const csrftoken = Cookies.get('csrftoken') || '';
 
@@ -35,6 +43,15 @@ export default function News({ params }: { params: { id: string }}) {
         fetchNews(); // 関数を呼び出す
     }, []); // コンポーネントのマウント時に実行
 
+    useEffect(() => {
+        if (data.length > 0) {
+            setFormattedDescription(data[0]['detail'].split(/(\n)/).map((item: string, index: number) => {
+                return <Fragment key={index}>{item.match(/\n/) ? <br /> : item}</Fragment>;
+            }));
+        }
+    }, [data]);
+
+
     return (
         <main>
             <ImportantNews />
@@ -54,7 +71,7 @@ export default function News({ params }: { params: { id: string }}) {
                                 <>
                                     <p className="text-xs my-1.5 text-gray-700">{new Date(data[0]['created_at']).toLocaleDateString('ja-JP')}</p>
                                     <h3 className="text-base mb-4">{data[0]['title']}</h3>
-                                    <p className='text-sm'>{data[0]['detail']}</p>
+                                    <p className='text-sm'>{formattedDescription}</p>
                                 </>
                             ) : (
                                 <p className="text-xs my-1.5 text-gray-700">指定されたニュースが見つかりませんでした</p> // デフォルトメッセージ

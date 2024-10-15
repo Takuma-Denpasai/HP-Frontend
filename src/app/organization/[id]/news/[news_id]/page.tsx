@@ -1,0 +1,146 @@
+"use client";
+
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { fetchWithAuth } from '@/utils/api';
+import { Loading } from '@/components/Loading';
+
+interface News {
+  id: number;
+  title: string;
+  detail: string;
+  show_top: boolean;
+  important: boolean;
+  organization__name: string;
+  user__username: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export default function News({ params }: { params: { id: string, news_id: string }}) {
+
+  const [newsData, setNewsData] = useState<News[]>([]);
+  const [loading, setLoading] = useState(true);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/news/${params.news_id}`;
+
+  type LoginDataType = {
+    title: string;
+    detail: string;
+    show_top: boolean;
+    important: boolean;
+  };
+
+  const router = useRouter();
+
+  const { 
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginDataType>({
+    reValidateMode: 'onSubmit',
+  });
+
+  let count: number = 0;
+
+  const onSubmit = async (data: any) => {
+    const csrftoken = Cookies.get('csrftoken') || '';
+    
+    try {
+      const response = await fetchWithAuth(apiUrl, 'POST', data);
+    } catch (error) {
+      console.error('エラー:', error);
+      alert('エラー:' + error);
+    } finally {
+      router.push(`/organization/${params.id}/news`);
+    }
+  };
+
+  useEffect(() => {
+		const fetchData = async () => {
+				try {
+						const data = await fetchWithAuth(apiUrl, 'GET');
+            setNewsData(data['news']);
+				} catch (error) {
+						console.error('データ取得エラー:', error);
+				} finally {
+						setLoading(false);
+				}
+		};
+
+		fetchData();
+}, []);
+
+  return (
+    <main>
+      <div className="mx-3.5 my-10">
+        <div className="container mx-auto text-white text-center m-12">
+          <h2 className="text-3xl font-light text-shadow-md m-3">
+          New News
+          </h2>
+          <p className="text-sm mb-4">
+          お知らせ登録
+          </p>
+        </div>
+          {loading ? <Loading /> : (
+          <div className="container mx-auto text-xl md:w-6/12 w-full">
+            <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition dulation-100 text-center">
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div>
+                  <input
+                    placeholder="タイトル"
+                    defaultValue={newsData[0]['title']}
+                    {...register('title', {
+                      required: {
+                        value: true, 
+                        message: 'タイトルを入力してください',
+                      },
+                    })} 
+                    className='w-11/12 m-4 p-4 border-2 rounded-lg'
+                  />
+                  {errors.title?.message && <div>{errors.title.message}</div>}
+                </div>
+                <div>
+                  <textarea
+                    placeholder="本文"
+                    defaultValue={newsData[0]['detail']}
+                    {...register('detail', {
+                      required: {
+                        value: true, 
+                        message: '本文を入力してください',
+                      },
+                    })} 
+                    className='w-11/12 m-4 p-4 border-2 rounded-lg h-64'
+                  />
+                  {errors.detail?.message && <div>{errors.detail.message}</div>}
+                </div>
+                <div className='text-left inline-block w-full'>
+                  <input
+                    type="checkbox"
+                    defaultChecked={newsData[0]['show_top']}
+                    {...register('show_top')} 
+                    className='m-4 p-4 border-2 rounded-lg'
+                  />
+                  <label className='text-base'>トップページへ表示</label>
+                  {errors.show_top?.message && <div>{errors.show_top.message}</div>}
+                </div>
+                <div className='text-left inline-block w-full'>
+                  <input
+                    type="checkbox"
+                    defaultChecked={newsData[0]['important']}
+                    {...register('important')} 
+                    className='m-4 p-4 border-2 rounded-lg'
+                  />
+                  <label className='text-base'>重要なお知らせへ表示</label>
+                  {errors.show_top?.message && <div>{errors.show_top.message}</div>}
+                </div>
+                <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'>送信</button>
+              </form>
+            </div>
+          </div>
+          )}
+        </div>
+      </main>
+  );
+}

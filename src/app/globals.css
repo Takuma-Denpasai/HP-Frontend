@@ -18,6 +18,15 @@
 
 body {
   background-color: gray;
+  font-size: 16px;
+}
+
+input {
+  font-size: 16px;
+}
+
+textarea {
+  font-size: 16px;
 }
 
 main {
