@@ -6,9 +6,18 @@ import { Loading } from '@/components/Loading';
 import { fetchWithAuth } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 
+interface Permission {
+  id: number;
+  permission_type: string;
+  created_at: string;
+  organization_permission_inspection__inspected: boolean;
+  organization_permission_inspection__deleted: boolean;
+}
+
 export default function News({ params }: { params: { id: string }}) {
 
   const [permission, setPermission] = useState('');
+  const [nowPermission, setNowPermission] = useState<Permission[]>([]);
   const [havePermission, setHavePermission] = useState<string[]>([]);
   const [organizationLoading, setOrganizationLoading] = useState(true);
   const url = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/permission`;
@@ -19,6 +28,7 @@ export default function News({ params }: { params: { id: string }}) {
 				try {
 						const data = await fetchWithAuth(url, 'GET');
             setHavePermission(data['permissions']);
+            setNowPermission(data['now_permissions']);
 				} catch (error) {
 						console.error('データ取得エラー:', error);
 				} finally {
@@ -78,6 +88,20 @@ export default function News({ params }: { params: { id: string }}) {
                         </div>
                         <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'>申請</button>
                       </form>
+                    </div>
+                    <div className="container mx-auto text-xl md:w-6/12 w-full">
+                    <p className="text-sm mb-4 text-center text-white mt-4">申請履歴</p>
+                    {nowPermission && nowPermission.map((permissions) => (
+                      <div key={permissions['id']}>
+                        <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
+                          <p className="text-xs my-1.5 text-gray-700">{new Date(permissions['created_at']).toLocaleDateString('ja-JP')}</p>
+                          <h3 className="text-base">{permissions['permission_type']}</h3>
+                          {permissions['organization_permission_inspection__inspected'] && <p className="text-xs my-1.5 text-green-600">管理者によって承認済み</p>}
+                          {permissions['organization_permission_inspection__deleted'] && <p className="text-xs my-1.5 text-red-600">管理者によって否認済み</p>}
+                          {!(permissions['organization_permission_inspection__inspected'] || permissions['organization_permission_inspection__deleted']) && <p className="text-xs my-1.5 text-gray-600">管理者による承認を待機中...</p>}
+                        </div>
+                      </div>
+                    ))}
                     </div>
                   </>
                 )}

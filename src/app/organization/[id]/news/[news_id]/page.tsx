@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { fetchWithAuth } from '@/utils/api';
 import { Loading } from '@/components/Loading';
+import Link from 'next/link';
 
 interface News {
   id: number;
@@ -140,6 +141,9 @@ export default function News({ params }: { params: { id: string, news_id: string
             </div>
           </div>
           )}
+          <Link href={`/organization/${params.id}/news/${params.news_id}/delete`} className='bg-white-100'>
+            <p className='text-center text-red-400 text-lg my-4'>お知らせを削除</p>
+          </Link>
         </div>
       </main>
   );
