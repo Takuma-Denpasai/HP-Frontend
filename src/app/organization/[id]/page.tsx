@@ -98,9 +98,9 @@ export default function News({ params }: { params: { id: string }}) {
                             <h3 className="text-base">新規権限申請</h3>
                           </div>
                         </Link>
-                        <Link href={`/organization/${params.id}/delete`}>
+                        <Link href={`/organization/${params.id}/edit`}>
                           <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
-                            <h3 className="text-base text-red-500">オーガナイゼーションの削除</h3>
+                            <h3 className="text-base">オーガナイゼーションの編集</h3>
                           </div>
                         </Link>
                       </>
