@@ -1,13 +1,11 @@
 "use client";
 
 import Link from 'next/link';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchWithAuth } from '@/utils/api';
 
 export default function News({ params }: { params: { id: string, user_id: string }}) {
 
-  const [status, setStatus] = useState(0);
   const url = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/delete`;
   const router = useRouter();
 
@@ -17,11 +15,6 @@ export default function News({ params }: { params: { id: string, user_id: string
     } catch (error) {
         console.error('データ取得エラー:', error);
     } finally {
-      if (status === 201) {
-        alert('削除しました');
-      } else if (status === 403) {
-        alert('権限がありません');
-      }
       router.push(`/organization`);
     }
   };
