@@ -52,6 +52,7 @@ const NewsPage = () => {
 						<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
 							<p className="text-xs my-1.5 text-gray-700">{new Date(news['created_at']).toLocaleDateString('ja-JP')}</p>
 							<h3 className="text-base">{news['title']}</h3>
+							<p className="text-xs my-1.5 text-gray-700">{news['user__username']} ({news['organization__name']})</p>
 						</div>
 					</Link>
 				))}

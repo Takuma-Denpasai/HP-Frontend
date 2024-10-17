@@ -5,6 +5,8 @@ interface News {
     title: string;
     detail: string;
     created_at: string;
+    organization__name: string;
+    user__username: string;
 }
 
 import Link from 'next/link';
@@ -71,6 +73,7 @@ export default function News({ params }: { params: { id: string }}) {
                                 <>
                                     <p className="text-xs my-1.5 text-gray-700">{new Date(data[0]['created_at']).toLocaleDateString('ja-JP')}</p>
                                     <h3 className="text-base mb-4">{data[0]['title']}</h3>
+                                    <p className="text-xs my-1.5 text-gray-700">{data[0]['user__username']} / {data[0]['organization__name']}</p>
                                     <p className='text-sm'>{formattedDescription}</p>
                                 </>
                             ) : (
