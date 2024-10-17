@@ -1,5 +1,7 @@
 'use client';
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouse, faNewspaper, faShop, faCalendar, faBuilding, faArrowRightToBracket, faArrowRightFromBracket, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
@@ -63,25 +65,25 @@ export const Header: React.FC = () => {
                         <li className="my-4">
                             <Link href={"/"}>
                                 <p className="text-3xl font-thin my-1">Top</p>
-                                <p className="text-xs text-gray-500">トップページ</p>
+                                <p className="text-xs text-gray-500"><FontAwesomeIcon icon={faHouse} /> トップページ</p>
                             </Link>
                         </li>
                         <li className="my-4">
                             <Link href={"/news"}>
                                 <p className="text-3xl font-thin my-1">News</p>
-                                <p className="text-xs text-gray-500">運営からのお知らせ</p>
+                                <p className="text-xs text-gray-500"><FontAwesomeIcon icon={faNewspaper} /> 運営からのお知らせ</p>
                             </Link>
                         </li>
                         <li className="my-4">
                             <Link href={"/shop"}>
                                 <p className="text-3xl font-thin my-1">Shop</p>
-                                <p className="text-xs text-gray-500">模擬店情報</p>
+                                <p className="text-xs text-gray-500"><FontAwesomeIcon icon={faShop} /> 模擬店情報</p>
                             </Link>
                         </li>
                         <li className="my-4">
                             <Link href={"/event"}>
                                 <p className="text-3xl font-thin my-1">Event</p>
-                                <p className="text-xs text-gray-500">イベント情報</p>
+                                <p className="text-xs text-gray-500"><FontAwesomeIcon icon={faCalendar} /> イベント情報</p>
                             </Link>
                         </li>
                         {isLoggedIn ? (
@@ -89,13 +91,13 @@ export const Header: React.FC = () => {
                                 <li className="my-4">
                                     <Link href={"/organization"}>
                                         <p className="text-3xl font-thin my-1">Organization</p>
-                                        <p className="text-xs text-gray-500">オーガナイゼーション</p>
+                                        <p className="text-xs text-gray-500"><FontAwesomeIcon icon={faBuilding} /> オーガナイゼーション</p>
                                     </Link>
                                 </li>
                                 <li className="my-4">
                                     <Link href={"/logout"}>
                                         <p className="text-3xl font-thin my-1">Logout</p>
-                                        <p className="text-xs text-gray-500">ログアウト</p>
+                                        <p className="text-xs text-gray-500"><FontAwesomeIcon icon={faArrowRightFromBracket} /> ログアウト</p>
                                     </Link>
                                 </li>
                             </>
@@ -104,13 +106,13 @@ export const Header: React.FC = () => {
                                 <li className="my-4">
                                     <Link href={"/login"}>
                                         <p className="text-3xl font-thin my-1">Login</p>
-                                        <p className="text-xs text-gray-500">ログイン</p>
+                                        <p className="text-xs text-gray-500"><FontAwesomeIcon icon={faArrowRightToBracket} /> ログイン</p>
                                     </Link>
                                 </li>
                                 <li className="my-4">
                                     <Link href={"/register"}>
                                         <p className="text-3xl font-thin my-1">Register</p>
-                                        <p className="text-xs text-gray-500">アカウント作成</p>
+                                        <p className="text-xs text-gray-500"><FontAwesomeIcon icon={faUserPlus} /> アカウント作成</p>
                                     </Link>
                                 </li>
                             </>

@@ -1,5 +1,7 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faUserGroup, faNewspaper } from "@fortawesome/free-solid-svg-icons";
 import { ImportantNews } from "@/components/ImportantNews";
 import { Loading } from "@/components/Loading";
 import { useState, useEffect } from "react";
@@ -39,7 +41,7 @@ const NewsPage = () => {
 			<div className="mx-3.5 my-10">
 				<div className="container mx-auto text-white text-center m-12">
 					<h2 className="text-3xl font-light text-shadow-md m-3">
-					News
+					<FontAwesomeIcon icon={faNewspaper} /> News
 					</h2>
 					<p className="text-sm mb-4">
 					運営からのお知らせ
@@ -52,6 +54,7 @@ const NewsPage = () => {
 						<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
 							<p className="text-xs my-1.5 text-gray-700">{new Date(news['created_at']).toLocaleDateString('ja-JP')}</p>
 							<h3 className="text-base">{news['title']}</h3>
+							<p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faUser} /> {news['user__username']}　<FontAwesomeIcon icon={faUserGroup} /> {news['organization__name']}</p>
 						</div>
 					</Link>
 				))}

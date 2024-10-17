@@ -1,5 +1,7 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPalette, faNewspaper, faUser, faUserGroup, faShop, faCalendar, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { ImportantNews } from "@/components/ImportantNews";
 import { useState, useEffect } from "react";
 import { Loading } from "@/components/Loading";
@@ -63,7 +65,7 @@ export default function Top() {
 					<div className="mx-3.5 my-10">
 						<div className="container mx-auto text-white">
 							<h2 className="text-3xl font-light text-shadow-md">
-							Theme
+							<FontAwesomeIcon icon={faPalette} /> Theme
 							</h2>
 							<p className="text-xs mb-4 mt-1">
 							今年のテーマ
@@ -78,7 +80,7 @@ export default function Top() {
 					<div className="mx-3.5 my-10">
 						<div className="container mx-auto text-white">
 							<h2 className="text-3xl font-light text-shadow-md">
-							News
+							<FontAwesomeIcon icon={faNewspaper} /> News
 							</h2>
 							<p className="text-xs mb-4 mt-1">
 							運営からのお知らせ
@@ -92,6 +94,7 @@ export default function Top() {
 								<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
 									<p className="text-xs my-1.5 text-gray-700">{new Date(news['created_at']).toLocaleDateString('ja-JP')}</p>
 									<h3 className="text-base">{news['title']}</h3>
+									<p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faUser} /> {news['user__username']}　<FontAwesomeIcon icon={faUserGroup} /> {news['organization__name']}</p>
 								</div>
 							</Link>
 							))
@@ -101,13 +104,13 @@ export default function Top() {
 							}
 						</div>
 						<Link href={"/news"}>
-							<p className="text-center text-white hover:text-gray-200 transition duration-100">お知らせ一覧</p>
+							<p className="text-center text-white hover:text-gray-200 transition duration-100">お知らせ一覧 <FontAwesomeIcon icon={faChevronRight} /></p>
 						</Link>
 					</div>
 					<div className="mx-3.5 my-10">
 						<div className="container mx-auto text-white">
 							<h2 className="text-3xl font-light text-shadow-md">
-							Shop
+							<FontAwesomeIcon icon={faShop} /> Shop
 							</h2>
 							<p className="text-xs mb-4 mt-1">
 							模擬店情報
@@ -119,13 +122,13 @@ export default function Top() {
 							</div>
 						</div>
 						<Link href={"/shop"}>
-							<p className="text-center text-white hover:text-gray-200 transition duration-100">模擬店一覧</p>
+							<p className="text-center text-white hover:text-gray-200 transition duration-100">模擬店一覧 <FontAwesomeIcon icon={faChevronRight} /></p>
 						</Link>
 					</div>
 					<div className="mx-3.5 my-10">
 						<div className="container mx-auto text-white">
 							<h2 className="text-3xl font-light text-shadow-md">
-							Event
+							<FontAwesomeIcon icon={faCalendar} /> Event
 							</h2>
 							<p className="text-xs mb-4 mt-1">
 							イベント情報
@@ -147,7 +150,7 @@ export default function Top() {
 							}
 						</div>
 						<Link href={"/event"}>
-							<p className="text-center text-white hover:text-gray-200 transition duration-100">イベント一覧</p>
+							<p className="text-center text-white hover:text-gray-200 transition duration-100">イベント一覧 <FontAwesomeIcon icon={faChevronRight} /></p>
 						</Link>
 					</div>
 				</div>

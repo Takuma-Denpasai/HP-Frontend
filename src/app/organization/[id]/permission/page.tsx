@@ -1,5 +1,7 @@
 "use client";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck, faCircleXmark, faSpinner, faClockRotateLeft, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Loading } from '@/components/Loading';
@@ -67,7 +69,7 @@ export default function News({ params }: { params: { id: string }}) {
                   <>
                     <div className="container mx-auto text-white text-center m-12">
                         <h2 className="text-3xl font-light text-shadow-md m-3">
-                            Request Organization Permission
+                        <FontAwesomeIcon icon={faCircleCheck} /> Request Organization Permission
                         </h2>
                         <p className="text-sm mb-4">
                             オーガナイゼーション権限の申請
@@ -86,19 +88,19 @@ export default function News({ params }: { params: { id: string }}) {
                             {!havePermission.includes('inspection') && <option value={"inspection"}>inspection</option>}
                           </select>
                         </div>
-                        <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'>申請</button>
+                        <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'><FontAwesomeIcon icon={faPaperPlane} /> 申請</button>
                       </form>
                     </div>
                     <div className="container mx-auto text-xl md:w-6/12 w-full">
-                    <p className="text-sm mb-4 text-center text-white mt-4">申請履歴</p>
+                    <p className="text-sm mb-4 text-center text-white mt-4"><FontAwesomeIcon icon={faClockRotateLeft} /> 申請履歴</p>
                     {nowPermission && nowPermission.map((permissions) => (
                       <div key={permissions['id']}>
                         <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
                           <p className="text-xs my-1.5 text-gray-700">{new Date(permissions['created_at']).toLocaleDateString('ja-JP')}</p>
                           <h3 className="text-base">{permissions['permission_type']}</h3>
-                          {permissions['organization_permission_inspection__inspected'] && <p className="text-xs my-1.5 text-green-600">管理者によって承認済み</p>}
-                          {permissions['organization_permission_inspection__deleted'] && <p className="text-xs my-1.5 text-red-600">管理者によって否認済み</p>}
-                          {!(permissions['organization_permission_inspection__inspected'] || permissions['organization_permission_inspection__deleted']) && <p className="text-xs my-1.5 text-gray-600">管理者による承認を待機中...</p>}
+                          {permissions['organization_permission_inspection__inspected'] && <p className="text-xs my-1.5 text-green-600"><FontAwesomeIcon icon={faCircleCheck} /> 管理者によって承認済み</p>}
+                          {permissions['organization_permission_inspection__deleted'] && <p className="text-xs my-1.5 text-red-600"><FontAwesomeIcon icon={faCircleXmark} /> 管理者によって否認済み</p>}
+                          {!(permissions['organization_permission_inspection__inspected'] || permissions['organization_permission_inspection__deleted']) && <p className="text-xs my-1.5 text-gray-600"><FontAwesomeIcon icon={faSpinner} /> 管理者による承認を待機中...</p>}
                         </div>
                       </div>
                     ))}

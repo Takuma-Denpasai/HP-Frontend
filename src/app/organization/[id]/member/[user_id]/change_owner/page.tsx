@@ -1,5 +1,7 @@
 "use client";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCrown, faArrowRightArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { fetchWithAuth } from '@/utils/api';
 import { useRouter } from 'next/navigation';
@@ -29,7 +31,7 @@ export default function News({ params }: { params: { id: string, user_id: string
       <div className="mx-3.5 my-10">
         <div className="container mx-auto text-white text-center m-12">
           <h2 className="text-3xl font-light text-shadow-md m-3">
-            Change Owner
+          <FontAwesomeIcon icon={faCrown} /> Change Owner
           </h2>
           <p className="text-sm mb-4">
             オーナーを譲渡
@@ -39,7 +41,7 @@ export default function News({ params }: { params: { id: string, user_id: string
           <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100 text-center">
             <form onSubmit={handleSubmit}>
               <p>オーナーを譲渡しますか？</p>
-              <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'>譲渡</button><br />
+              <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'><FontAwesomeIcon icon={faArrowRightArrowLeft} /> 譲渡</button><br />
               <Link href={`/organization/${params.id}/member/${params.user_id}`}><p className='text-base'>キャンセル</p></Link>
             </form>
           </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan, faPencil } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -63,7 +65,7 @@ export default function News({ params }: { params: { id: string }}) {
       <div className="mx-3.5 my-10">
         <div className="container mx-auto text-white text-center m-12">
           <h2 className="text-3xl font-light text-shadow-md m-3">
-          Edit Organization
+          <FontAwesomeIcon icon={faPencil} /> Edit Organization
           </h2>
           <p className="text-sm mb-4">
           オーガナイゼーションの編集
@@ -87,13 +89,13 @@ export default function News({ params }: { params: { id: string }}) {
                   />
                   {errors.name?.message && <div>{errors.name.message}</div>}
                 </div>
-                <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'>変更</button>
+                <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'><FontAwesomeIcon icon={faPencil} /> 変更</button>
               </form>
             </div>
           </div>
           )}
           <Link href={`/organization/${params.id}/delete`} className='bg-white-100'>
-            <p className='text-center text-red-400 text-lg my-4'>オーガナイゼーションを削除</p>
+            <p className='text-center text-red-400 text-lg my-4'><FontAwesomeIcon icon={faTrashCan} /> オーガナイゼーションを削除</p>
           </Link>
         </div>
       </main>

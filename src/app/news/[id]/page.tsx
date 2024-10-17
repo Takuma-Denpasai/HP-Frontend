@@ -5,8 +5,12 @@ interface News {
     title: string;
     detail: string;
     created_at: string;
+    organization__name: string;
+    user__username: string;
 }
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faNewspaper, faBuilding, faList } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { useState, useEffect, Fragment } from 'react';
 import Cookies from 'js-cookie';
@@ -58,7 +62,7 @@ export default function News({ params }: { params: { id: string }}) {
             <div className="mx-3.5 my-10">
                 <div className="container mx-auto text-white text-center m-12">
                     <h2 className="text-3xl font-light text-shadow-md m-3">
-                        News
+                    <FontAwesomeIcon icon={faNewspaper} /> News
                     </h2>
                     <p className="text-sm mb-4">
                         運営からのお知らせ
@@ -71,6 +75,7 @@ export default function News({ params }: { params: { id: string }}) {
                                 <>
                                     <p className="text-xs my-1.5 text-gray-700">{new Date(data[0]['created_at']).toLocaleDateString('ja-JP')}</p>
                                     <h3 className="text-base mb-4">{data[0]['title']}</h3>
+                                    <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faUser} /> {data[0]['user__username']}　<FontAwesomeIcon icon={faBuilding} /> {data[0]['organization__name']}</p>
                                     <p className='text-sm'>{formattedDescription}</p>
                                 </>
                             ) : (
@@ -80,7 +85,7 @@ export default function News({ params }: { params: { id: string }}) {
                     </div>
 								)}
                                 <Link href={"/news"}>
-                                    <p className="text-center text-white hover:text-gray-200 transition duration-100">お知らせ一覧</p>
+                                    <p className="text-center text-white hover:text-gray-200 transition duration-100"><FontAwesomeIcon icon={faList} /> お知らせ一覧</p>
                                 </Link>
             </div>
         </main>

@@ -1,5 +1,7 @@
 "use client";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faCrown, faTrashCan, faRotate } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -71,7 +73,7 @@ export default function News({ params }: { params: { id: string, user_id: string
               <>
                 <div className="container mx-auto text-white text-center m-12">
                     <h2 className="text-3xl font-light text-shadow-md m-3">
-                        {memberData[0]['username']}
+                    <FontAwesomeIcon icon={faUser} /> {memberData[0]['username']}
                     </h2>
                     <p className="text-sm mb-4">
                         メンバー管理
@@ -174,21 +176,21 @@ export default function News({ params }: { params: { id: string, user_id: string
                   </div>
                   {addData && (
                     <div className='text-center'>
-                      <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'>更新</button>
+                      <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'><FontAwesomeIcon icon={faRotate} /> 更新</button>
                     </div>
                   )}
                 </form>
                 {addData && !isOwner && (
                   <Link href={`/organization/${params.id}/member/${params.user_id}/delete`} className='bg-white-100'>
-                    <p className='text-center text-red-400 text-lg my-4'>オーガナイゼーションから退会</p>
+                    <p className='text-center text-red-400 text-lg my-4'><FontAwesomeIcon icon={faTrashCan} /> オーガナイゼーションから退会</p>
                   </Link>
                 )}
                 {owner && !isOwner && (
                   <Link href={`/organization/${params.id}/member/${params.user_id}/change_owner`} className='bg-white-100'>
-                    <p className='text-center text-red-400 text-lg my-4'>オーナーの譲渡</p>
+                    <p className='text-center text-red-400 text-lg my-4'><FontAwesomeIcon icon={faCrown} /> オーナーの譲渡</p>
                   </Link>
                 )}
-                {addData && isOwner && <p className='text-white text-center'>オーナーは退会できません</p>}
+                {addData && isOwner && <p className='text-white text-center'><FontAwesomeIcon icon={faCrown} /> オーナーは退会できません</p>}
               </>
             )}
         </div>

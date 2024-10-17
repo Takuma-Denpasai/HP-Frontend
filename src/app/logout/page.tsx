@@ -1,5 +1,7 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
@@ -24,7 +26,7 @@ export default function Login() {
     <main className="mx-3.5 my-10">
       <div className="container mx-auto text-white text-center m-12">
         <h2 className="text-3xl font-light text-shadow-md m-3">
-        Logout
+        <FontAwesomeIcon icon={faArrowRightFromBracket} /> Logout
         </h2>
         <p className="text-sm mb-4">
         ログアウト
