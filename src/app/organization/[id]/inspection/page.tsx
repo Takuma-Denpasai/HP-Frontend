@@ -79,6 +79,7 @@ interface BandSong {
 
 export default function News({ params }: { params: { id: string }}) {
 
+  const [count, setCount] = useState(0);
   const [news, setNews] = useState<News[]>([]);
   const [organizationPermission, setOrganizationPermission] = useState<OrganizationPermission[]>([]);
   const [post, setPost] = useState<Post[]>([]);
@@ -95,6 +96,7 @@ export default function News({ params }: { params: { id: string }}) {
 		const fetchData = async () => {
 				try {
 						const data = await fetchWithAuth(url, 'GET');
+            setCount(data['count']);
             setNews(data['news']);
             setOrganizationPermission(data['organization_permission']);
             setPost(data['post']);
@@ -122,10 +124,19 @@ export default function News({ params }: { params: { id: string }}) {
                     Inspection
                 </h2>
                 <p className="text-sm mb-4">
-                    検証待機リスト
+                    AI自動検証保留リスト
                 </p>
             </div>
-            {loading && (<Loading />)}
+            {loading ? (<Loading />) : (
+            count === 0 && (
+              <>
+                <div className="container mx-auto text-xl md:w-6/12 w-full">
+                  <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
+                    <p className="text-sm">現在対応が必要なアイテムはありません</p>
+                  </div>
+                </div>
+              </>
+            ))}
             <div className="container mx-auto text-xl md:w-6/12 w-full">
               {news && news.map((news) => (
                 <Link key={news['news__id']} href={`/organization/${params.id}/inspection/news/${news['news__id']}`}>
@@ -137,7 +148,7 @@ export default function News({ params }: { params: { id: string }}) {
                 </Link>
               ))}
               {organizationPermission && organizationPermission.map((permission) => (
-                <Link key={permission['organization__id']} href={`/organization/${params.id}/inspection/permission/${permission['organization__id']}`}>
+                <Link key={permission['organization__id']} href={`/organization/${params.id}/inspection/organization_permission/${permission['organization__id']}`}>
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
                     <p className="text-xs my-1.5 text-gray-700">Organization Permission {new Date(permission['organization__updated_at']).toLocaleDateString('ja-JP')}</p>
                     <h3 className="text-base">{permission['organization__permission_type']}</h3>

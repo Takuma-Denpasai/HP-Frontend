@@ -148,7 +148,7 @@ const handleDeny = async (event: React.FormEvent) => {
                     Inspection Item
                 </h2>
                 <p className="text-sm mb-4">
-                    検証待機アイテム
+                    AI自動検証保留アイテム
                 </p>
             </div>
             {loading ? (<Loading />) : (
