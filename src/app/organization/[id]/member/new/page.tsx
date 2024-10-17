@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { fetchWithAuth } from '@/utils/api';
 import { useRouter } from 'next/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 export default function News({ params }: { params: { id: string }}) {
 
@@ -35,7 +37,7 @@ export default function News({ params }: { params: { id: string }}) {
       <div className="mx-3.5 my-10">
         <div className="container mx-auto text-white text-center m-12">
           <h2 className="text-3xl font-light text-shadow-md m-3">
-            New Member
+          <FontAwesomeIcon icon={faUserPlus} /> Invite Member
           </h2>
           <p className="text-sm mb-4">
             メンバーを招待
@@ -51,7 +53,7 @@ export default function News({ params }: { params: { id: string }}) {
                   className='w-11/12 m-4 p-4 border-2 rounded-lg'
                 />
               </div>
-              <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'>招待</button>
+              <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'><FontAwesomeIcon icon={faUserPlus} /> 招待</button>
             </form>
           </div>
         </div>

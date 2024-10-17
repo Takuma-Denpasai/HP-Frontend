@@ -1,5 +1,7 @@
 "use client";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faNewspaper, faCircleCheck, faComment, faShop, faUtensils, faCalendar, faMusic, faGuitar, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Loading } from '@/components/Loading';
@@ -121,7 +123,7 @@ export default function News({ params }: { params: { id: string }}) {
           <div className="mx-3.5 my-10">
             <div className="container mx-auto text-white text-center m-12">
                 <h2 className="text-3xl font-light text-shadow-md m-3">
-                    Inspection
+                <FontAwesomeIcon icon={faCircleExclamation} /> Inspection
                 </h2>
                 <p className="text-sm mb-4">
                     AI自動検証保留リスト
@@ -141,7 +143,7 @@ export default function News({ params }: { params: { id: string }}) {
               {news && news.map((news) => (
                 <Link key={news['news__id']} href={`/organization/${params.id}/inspection/news/${news['news__id']}`}>
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
-                    <p className="text-xs my-1.5 text-gray-700">News {new Date(news['news__updated_at']).toLocaleDateString('ja-JP')}</p>
+                    <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faNewspaper} /> News {new Date(news['news__updated_at']).toLocaleDateString('ja-JP')}</p>
                     <h3 className="text-base">{news['news__title']}</h3>
                     <p className="text-xs my-1.5 text-gray-700">{news['news__user__username']} / {news['news__organization__name']}</p>
                   </div>
@@ -150,7 +152,7 @@ export default function News({ params }: { params: { id: string }}) {
               {organizationPermission && organizationPermission.map((permission) => (
                 <Link key={permission['organization__id']} href={`/organization/${params.id}/inspection/organization_permission/${permission['organization__id']}`}>
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
-                    <p className="text-xs my-1.5 text-gray-700">Organization Permission {new Date(permission['organization__updated_at']).toLocaleDateString('ja-JP')}</p>
+                    <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faCircleCheck} /> Organization Permission {new Date(permission['organization__updated_at']).toLocaleDateString('ja-JP')}</p>
                     <h3 className="text-base">{permission['organization__permission_type']}</h3>
                     <p className="text-xs my-1.5 text-gray-700">{permission['organization__organization__name']}</p>
                   </div>
@@ -159,7 +161,7 @@ export default function News({ params }: { params: { id: string }}) {
               {post && post.map((post) => (
                 <Link key={post['post__id']} href={`/organization/${params.id}/inspection/post/${post['post__id']}`}>
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
-                    <p className="text-xs my-1.5 text-gray-700">Post {new Date(post['post__updated_at']).toLocaleDateString('ja-JP')}</p>
+                    <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faComment} /> Post {new Date(post['post__updated_at']).toLocaleDateString('ja-JP')}</p>
                     <h3 className="text-base">{post['post__title']}</h3>
                     <p className="text-xs my-1.5 text-gray-700">{post['post__user__username']} / {post['post__organization__name']}</p>
                   </div>
@@ -168,7 +170,7 @@ export default function News({ params }: { params: { id: string }}) {
               {shop && shop.map((shop) => (
                 <Link key={shop['shop__id']} href={`/organization/${params.id}/inspection/shop/${shop['shop__id']}`}>
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
-                    <p className="text-xs my-1.5 text-gray-700">Shop {new Date(shop['shop__updated_at']).toLocaleDateString('ja-JP')}</p>
+                    <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faShop} /> Shop {new Date(shop['shop__updated_at']).toLocaleDateString('ja-JP')}</p>
                     <h3 className="text-base">{shop['shop__name']}</h3>
                     <p className="text-xs my-1.5 text-gray-700">{shop['shop__user__username']} / {shop['shop__organization__name']}</p>
                   </div>
@@ -177,7 +179,7 @@ export default function News({ params }: { params: { id: string }}) {
               {menu && menu.map((menu) => (
                 <Link key={menu['menu__id']} href={`/organization/${params.id}/inspection/menu/${menu['menu__id']}`}>
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
-                    <p className="text-xs my-1.5 text-gray-700">Menu {new Date(menu['menu__updated_at']).toLocaleDateString('ja-JP')}</p>
+                    <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faUtensils} /> Menu {new Date(menu['menu__updated_at']).toLocaleDateString('ja-JP')}</p>
                     <h3 className="text-base">{menu['menu__name']}</h3>
                     <p className="text-xs my-1.5 text-gray-700">{menu['menu__shop__name']}</p>
                   </div>
@@ -186,7 +188,7 @@ export default function News({ params }: { params: { id: string }}) {
               {event && event.map((event) => (
                 <Link key={event['event__id']} href={`/organization/${params.id}/inspection/event/${event['event__id']}`}>
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
-                    <p className="text-xs my-1.5 text-gray-700">Event {new Date(event['event__updated_at']).toLocaleDateString('ja-JP')}</p>
+                    <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faCalendar} /> Event {new Date(event['event__updated_at']).toLocaleDateString('ja-JP')}</p>
                     <h3 className="text-base">{event['event__title']}</h3>
                     <p className="text-xs my-1.5 text-gray-700">{event['event__user__username']} / {event['event__organization__name']}</p>
                   </div>
@@ -195,7 +197,7 @@ export default function News({ params }: { params: { id: string }}) {
               {karaoke && karaoke.map((karaoke) => (
                 <Link key={karaoke['karaoke__id']} href={`/organization/${params.id}/inspection/karaoke/${karaoke['karaoke__id']}`}>
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
-                    <p className="text-xs my-1.5 text-gray-700">Karaoke {new Date(karaoke['karaoke__updated_at']).toLocaleDateString('ja-JP')}</p>
+                    <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faMusic} /> Karaoke {new Date(karaoke['karaoke__updated_at']).toLocaleDateString('ja-JP')}</p>
                     <h3 className="text-base">{karaoke['karaoke__name']}</h3>
                     <p className="text-xs my-1.5 text-gray-700">{karaoke['karaoke__user__username']} / {karaoke['karaoke__organization__name']}</p>
                   </div>
@@ -204,7 +206,7 @@ export default function News({ params }: { params: { id: string }}) {
               {band && band.map((band) => (
                 <Link key={band['band__id']} href={`/organization/${params.id}/inspection/band/${band['band__id']}`}>
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
-                    <p className="text-xs my-1.5 text-gray-700">Band {new Date(band['band__updated_at']).toLocaleDateString('ja-JP')}</p>
+                    <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faGuitar} /> Band {new Date(band['band__updated_at']).toLocaleDateString('ja-JP')}</p>
                     <h3 className="text-base">{band['band__name']}</h3>
                     <p className="text-xs my-1.5 text-gray-700">{band['band__user__username']} / {band['band__organization__name']}</p>
                   </div>
@@ -212,6 +214,7 @@ export default function News({ params }: { params: { id: string }}) {
               ))}
               {bandSong && bandSong.map((bandSong) => (
                 <Link key={bandSong['song__id']} href={`/organization/${params.id}/inspection/band_song/${bandSong['song__id']}`}>
+                    <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faGuitar} /> Band Song</p>
                   <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
                     <h3 className="text-base">{bandSong['song__name']}</h3>
                     <p className="text-xs my-1.5 text-gray-700">{bandSong['song__band__name']}</p>

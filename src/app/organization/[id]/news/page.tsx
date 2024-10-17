@@ -1,5 +1,7 @@
 "use client";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faNewspaper, faPlus, faUser, faCircleCheck, faCircleExclamation, faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Loading } from '@/components/Loading';
@@ -42,15 +44,12 @@ export default function News({ params }: { params: { id: string }}) {
             <div className="mx-3.5 my-10">
                 <div className="container mx-auto text-white text-center m-12">
                     <h2 className="text-3xl font-light text-shadow-md m-3">
-                        Organization News
+                    <FontAwesomeIcon icon={faNewspaper} /> Organization News
                     </h2>
                     <p className="text-sm mb-4">
                         お知らせ管理
                     </p>
                 </div>
-                <Link href={`/organization/${params.id}/news/new`}>
-                    <p className="text-center text-white hover:text-gray-200 transition duration-100 text-base">お知らせの追加</p>
-                </Link>
 								{loading ? (<Loading />) : (
                   <>
                     <div className="container mx-auto text-xl md:w-6/12 w-full">
@@ -59,21 +58,21 @@ export default function News({ params }: { params: { id: string }}) {
                         <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
                           <p className="text-xs my-1.5 text-gray-700">{new Date(news['created_at']).toLocaleDateString('ja-JP')}</p>
                           <h3 className="text-base">{news['title']}</h3>
-                          <p className="text-xs my-1.5 text-gray-700">{news['user__username']}</p>
+                          <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faUser} /> {news['user__username']}</p>
                           {news['news_inspections__deleted'] ? (
-                            <p className="text-xs my-1.5 text-red-600">検証によって削除済み</p>
+                            <p className="text-xs my-1.5 text-red-600"><FontAwesomeIcon icon={faCircleXmark} /> 検証によって削除済み</p>
                           ) : (
                           news['news_inspections__ai'] ? (
                             news['news_inspections__inspected'] ? (
-                              <p className="text-xs my-1.5 text-green-600">AI自動検証によって承認済み</p>
+                              <p className="text-xs my-1.5 text-green-600"><FontAwesomeIcon icon={faCircleCheck} /> AI自動検証によって承認済み</p>
                             ) : (
-                              <p className="text-xs my-1.5 text-yellow-600">AI自動検証によって保留、人間による検証を待機中</p>
+                              <p className="text-xs my-1.5 text-yellow-600"><FontAwesomeIcon icon={faCircleExclamation} /> AI自動検証によって保留、人間による検証を待機中</p>
                             )
                           ) : (
                             news['news_inspections__inspected'] ? (
-                              <p className="text-xs my-1.5 text-green-600">人間によって承認済み</p>
+                              <p className="text-xs my-1.5 text-green-600"><FontAwesomeIcon icon={faCircleCheck} /> 人間によって承認済み</p>
                             ) : (
-                              <p className="text-xs my-1.5 text-gray-700">AI自動検証を待機しています...</p>
+                              <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faSpinner} /> AI自動検証を待機しています...</p>
                             )
                           ))}
                         </div>
@@ -82,6 +81,9 @@ export default function News({ params }: { params: { id: string }}) {
                     </div>
                   </>
                 )}
+                <Link href={`/organization/${params.id}/news/new`}>
+                    <p className="text-center text-white hover:text-gray-200 transition duration-100 text-base"><FontAwesomeIcon icon={faPlus} /> お知らせの追加</p>
+                </Link>
             </div>
             <Link href={`/organization/${params.id}`} className='text-center'>
               <p className='text-white'>オーガナイゼーションメニューへ戻る</p>

@@ -1,5 +1,7 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { Loading } from "@/components/Loading";
 import { useState, useEffect } from "react";
@@ -37,7 +39,7 @@ export const ImportantNews = () => {
             {loading && <Loading />}
                 <div className="container mx-auto px-3">
                     <div className="w-full m-auto px-4 py-4 bg-yellow-50 rounded-lg inline-block">
-                        <p className="text-red-500 py-1 font-bold text-xs">重要なお知らせ</p>
+                        <p className="text-red-500 py-1 font-bold text-xs"><FontAwesomeIcon icon={faTriangleExclamation} /> 重要なお知らせ</p>
                         {data.map((news) => ( // 不要な波括弧を削除し、mapを正しく表示
                             <Link key={news['id']} href={`/news/${news['id']}`}>
                                 <p className="py-1">{news['title']}</p>
@@ -50,7 +52,7 @@ export const ImportantNews = () => {
     } else {
         return (
             <>
-                {loading && <Loading />};
+                {loading && <Loading />}
             </>
         ) 
     }

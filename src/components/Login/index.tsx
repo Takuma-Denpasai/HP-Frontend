@@ -1,10 +1,11 @@
 "use client";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRightToBracket, faUserPlus, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import RefreshToken from '@/components/RefreshToken';
 
 export default function Login() {
 
@@ -63,7 +64,7 @@ export default function Login() {
     <div className="mx-3.5 my-10">
       <div className="container mx-auto text-white text-center m-12">
         <h2 className="text-3xl font-light text-shadow-md m-3">
-        Login
+        <FontAwesomeIcon icon={faArrowRightToBracket} /> Login
         </h2>
         <p className="text-sm mb-4">
         ログイン
@@ -101,9 +102,9 @@ export default function Login() {
                 />
                 {errors.password?.message && <div>{errors.password.message}</div>}
               </div>
-              <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'>ログイン</button>
+              <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'><FontAwesomeIcon icon={faLockOpen} /> ログイン</button>
             </form>
-            <Link href={`/register`}>アカウントをお持ちでない場合</Link>
+            <Link href={`/register`}><FontAwesomeIcon icon={faUserPlus} /> アカウントをお持ちでない場合</Link>
 					</div>
         </div>
       </div>

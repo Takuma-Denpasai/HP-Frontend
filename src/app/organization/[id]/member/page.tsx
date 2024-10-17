@@ -1,5 +1,7 @@
 "use client";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserGroup, faUserPlus, faCrown } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Loading } from '@/components/Loading';
@@ -43,7 +45,7 @@ export default function News({ params }: { params: { id: string }}) {
                   <>
                     <div className="container mx-auto text-white text-center m-12">
                         <h2 className="text-3xl font-light text-shadow-md m-3">
-                            {organizationData[0]['name']}
+                        <FontAwesomeIcon icon={faUserGroup} /> {organizationData[0]['name']}
                         </h2>
                         <p className="text-sm mb-4">
                             メンバー管理
@@ -54,7 +56,7 @@ export default function News({ params }: { params: { id: string }}) {
                       <Link key={member['id']} href={`/organization/${params.id}/member/${member['id']}`}>
                         <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
                           <h3 className="text-base">{member['username']}</h3>
-                          {organizationData[0]['owner_id'] === member['id'] && (<p className='text-xs mt-2'>オーガナイゼーションオーナー</p>)}
+                          {organizationData[0]['owner_id'] === member['id'] && (<p className='text-xs mt-2'><FontAwesomeIcon icon={faCrown} /> オーガナイゼーションオーナー</p>)}
                           <p className='text-xs mt-2'>
                           権限: {member['permissions'][0] !== "" && member['permissions'].length !== 0 ? member['permissions'].map((permission: any) => `${permission} `).join('') : (<span>なし</span>)}
                           </p>
@@ -66,7 +68,7 @@ export default function News({ params }: { params: { id: string }}) {
                 )}
                 {addData && (
                 <Link href={`/organization/${params.id}/member/new`}>
-                    <p className="text-center text-white hover:text-gray-200 transition duration-100 text-base">メンバーを招待</p>
+                    <p className="text-center text-white hover:text-gray-200 transition duration-100 text-base"><FontAwesomeIcon icon={faUserPlus} /> メンバーを招待</p>
                 </Link>
                 )}
             </div>
