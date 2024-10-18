@@ -6,9 +6,11 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchWithAuth } from '@/utils/api';
+import { Loading } from '@/components/Loading';
 
 export default function News({ params }: { params: { id: string, news_id: string }}) {
 
+  const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(0);
   const url = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/news/${params.news_id}/delete`;
   const router = useRouter();
@@ -29,12 +31,14 @@ export default function News({ params }: { params: { id: string, news_id: string
   };
 
   const handleSubmit = (event: React.FormEvent) => {
+    setLoading(true);
     event.preventDefault();
     fetchData();
   };
 
     return (
       <main>
+        {loading && <Loading />}
       <div className="mx-3.5 my-10">
         <div className="container mx-auto text-white text-center m-12">
           <h2 className="text-3xl font-light text-shadow-md m-3">

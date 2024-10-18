@@ -6,9 +6,11 @@ import { fetchWithAuth } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { Loading } from '@/components/Loading';
 
 export default function News({ params }: { params: { id: string }}) {
 
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState('');
   const url = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/member/new`;
   const router = useRouter();
@@ -28,12 +30,14 @@ export default function News({ params }: { params: { id: string }}) {
   }
 
   const handleSubmit = (event: React.FormEvent) => {
+    setLoading(true);
     event.preventDefault();
     fetchData();
   };
 
     return (
       <main>
+      {loading && <Loading />}
       <div className="mx-3.5 my-10">
         <div className="container mx-auto text-white text-center m-12">
           <h2 className="text-3xl font-light text-shadow-md m-3">

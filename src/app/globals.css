@@ -19,6 +19,7 @@
 body {
   background-color: gray;
   font-size: 16px;
+  letter-spacing: 0.17em;
 }
 
 p, a {

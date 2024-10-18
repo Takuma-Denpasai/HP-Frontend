@@ -18,6 +18,7 @@ interface Permission {
 
 export default function News({ params }: { params: { id: string }}) {
 
+  const [sendLoading, setSendLoading] = useState(false);
   const [permission, setPermission] = useState('');
   const [nowPermission, setNowPermission] = useState<Permission[]>([]);
   const [havePermission, setHavePermission] = useState<string[]>([]);
@@ -58,12 +59,14 @@ export default function News({ params }: { params: { id: string }}) {
   }
 
   const handleSubmit = (event: React.FormEvent) => {
+    setSendLoading(true);
     event.preventDefault();
     fetchData();
   };
 
     return (
         <main>
+            {sendLoading && <Loading />}
             <div className="mx-3.5 my-10">
 								{organizationLoading ? (<Loading />) : (
                   <>
