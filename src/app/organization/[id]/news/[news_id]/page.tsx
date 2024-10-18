@@ -24,6 +24,7 @@ interface News {
 
 export default function News({ params }: { params: { id: string, news_id: string }}) {
 
+  const [sendLoading, setSendLoading] = useState(false);
   const [newsData, setNewsData] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/news/${params.news_id}`;
@@ -48,6 +49,7 @@ export default function News({ params }: { params: { id: string, news_id: string
   let count: number = 0;
 
   const onSubmit = async (data: any) => {
+    setSendLoading(true);
     const csrftoken = Cookies.get('csrftoken') || '';
     
     try {
@@ -77,6 +79,7 @@ export default function News({ params }: { params: { id: string, news_id: string
 
   return (
     <main>
+      {sendLoading && <Loading />}
       <div className="mx-3.5 my-10">
         <div className="container mx-auto text-white text-center m-12">
           <h2 className="text-3xl font-light text-shadow-md m-3">

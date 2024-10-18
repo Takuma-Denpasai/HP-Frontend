@@ -5,6 +5,8 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+import { Loading } from '@/components/Loading';
+import { useState } from 'react';
 
 export default function Login() {
 
@@ -16,6 +18,7 @@ export default function Login() {
   };
 
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const { 
     register,
@@ -28,6 +31,7 @@ export default function Login() {
   let count: number = 0;
 
   const onSubmit = async (data: any) => {
+    setLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/register';
     const csrftoken = Cookies.get('csrftoken') || '';
     
@@ -58,6 +62,7 @@ export default function Login() {
 
   return (
     <main>
+      {loading && <Loading />}
       <div className="mx-3.5 my-10">
         <div className="container mx-auto text-white text-center m-12">
           <h2 className="text-3xl font-light text-shadow-md m-3">

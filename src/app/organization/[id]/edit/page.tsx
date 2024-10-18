@@ -14,6 +14,7 @@ export default function News({ params }: { params: { id: string }}) {
 
   const [organization, setOrganization] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sendLoading, setSendLoading] = useState(false);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/edit`;
 
   type OrganizationName = {
@@ -33,6 +34,7 @@ export default function News({ params }: { params: { id: string }}) {
   let count: number = 0;
 
   const onSubmit = async (data: any) => {
+    setSendLoading(true);
     const csrftoken = Cookies.get('csrftoken') || '';
     
     try {
@@ -62,6 +64,7 @@ export default function News({ params }: { params: { id: string }}) {
 
   return (
     <main>
+      {sendLoading && <Loading />}
       <div className="mx-3.5 my-10">
         <div className="container mx-auto text-white text-center m-12">
           <h2 className="text-3xl font-light text-shadow-md m-3">

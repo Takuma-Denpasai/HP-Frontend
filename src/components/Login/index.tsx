@@ -3,11 +3,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightToBracket, faUserPlus, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+import { Loading } from '@/components/Loading';
 
 export default function Login() {
+
+  const [loading, setLoading] = useState(false);
 
   type LoginDataType = {
     username: string;
@@ -27,6 +31,7 @@ export default function Login() {
   let count: number = 0;
 
   const onSubmit = async (data: any) => {
+    setLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/auth/jwt/create';
     const csrftoken = Cookies.get('csrftoken') || '';
     
@@ -62,6 +67,7 @@ export default function Login() {
 
   return (
     <div className="mx-3.5 my-10">
+      {loading && <Loading />}
       <div className="container mx-auto text-white text-center m-12">
         <h2 className="text-3xl font-light text-shadow-md m-3">
         <FontAwesomeIcon icon={faArrowRightToBracket} /> Login

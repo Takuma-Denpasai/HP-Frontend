@@ -121,6 +121,7 @@ export default function News({ params }: { params: { id: string, content_type: s
 }, []);
 
 const handleApprove = async (event: React.FormEvent) => {
+  setLoading(true);
   event.preventDefault();
   try {
     await fetchWithAuth(url, 'POST', { 'approve': true });
@@ -132,6 +133,7 @@ const handleApprove = async (event: React.FormEvent) => {
 };
 
 const handleDeny = async (event: React.FormEvent) => {
+  setLoading(true);
   event.preventDefault();
   try {
     await fetchWithAuth(url, 'POST', { 'approve': false });

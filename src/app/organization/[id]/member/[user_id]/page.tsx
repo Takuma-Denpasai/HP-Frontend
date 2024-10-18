@@ -11,6 +11,7 @@ import { fetchWithAuth } from '@/utils/api';
 
 export default function News({ params }: { params: { id: string, user_id: string }}) {
 
+  const [sendLoading, setSendLoading] = useState(false);
   const [addData, setAddData] = useState(false);
   const [memberData, setMemberData] = useState([]);
   const [organizationLoading, setOrganizationLoading] = useState(true);
@@ -42,6 +43,7 @@ export default function News({ params }: { params: { id: string, user_id: string
 };
 
   const handleSubmit = (event: React.FormEvent) => {
+    setSendLoading(true);
     event.preventDefault();
     fetchData();
   };
@@ -68,6 +70,7 @@ export default function News({ params }: { params: { id: string, user_id: string
 
   return (
     <main>
+      {sendLoading && <Loading />}
         <div className="mx-3.5 my-10">
             {organizationLoading ? (<Loading />) : (
               <>
