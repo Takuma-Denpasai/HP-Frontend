@@ -111,7 +111,7 @@ export default function News({ params }: { params: { id: string, content_type: s
             setKaraoke(data['karaoke']);
             setBand(data['band']);
             setBandSong(data['band_song']);
-            setImageUrls(data['imageUrls']);
+            setImageUrls(data['image']);
 				} catch (error) {
 						console.error('データ取得エラー:', error);
 				} finally {
