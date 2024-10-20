@@ -19,6 +19,7 @@ import { Loading } from '@/components/Loading';
 
 export default function News({ params }: { params: { id: string }}) {
     const [data, setData] = useState<News[]>([]);
+    const [image, setImage] = useState<string[]>([]);
     const [status, setStatus] = useState(0);
 	const [loading, setLoading] = useState(true);
     const [formattedDescription, setFormattedDescription] = useState<JSX.Element[] | null>(null);
@@ -38,6 +39,7 @@ export default function News({ params }: { params: { id: string }}) {
         if (contentType && contentType.includes('application/json')) {
             const data = await response.json();
             setData(data['news']);
+            setImage(data['image']);
             setStatus(response.status);
         }
 		setLoading(false);
@@ -77,6 +79,9 @@ export default function News({ params }: { params: { id: string }}) {
                                     <h3 className="text-base mb-4">{data[0]['title']}</h3>
                                     <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faUser} /> {data[0]['user__username']}　<FontAwesomeIcon icon={faBuilding} /> {data[0]['organization__name']}</p>
                                     <p className='text-sm mt-8 mb-4'>{formattedDescription}</p>
+                                    {image.map((img, index) => (
+                                        <img key={index} src={img} className="w-full h-auto my-6" />
+                                    ))}
                                 </>
                             ) : (
                                 <p className="text-xs my-1.5 text-gray-700">指定されたニュースが見つかりませんでした</p> // デフォルトメッセージ

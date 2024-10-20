@@ -1,7 +1,7 @@
 "use client";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendar, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan, faCalendar, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -23,6 +23,7 @@ export default function Event({ params }: { params: { id: string }}) {
 
   const [sendLoading, setSendLoading] = useState(false);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/event/new`;
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   type LoginDataType = {
     title: string;
@@ -30,6 +31,7 @@ export default function Event({ params }: { params: { id: string }}) {
     detail: string;
     start: Date;
     end: Date;
+    imageUrls: string[];
   };
 
   const router = useRouter();
@@ -48,13 +50,37 @@ export default function Event({ params }: { params: { id: string }}) {
     setSendLoading(true);
     
     try {
-      const response = await fetchWithAuth(apiUrl, 'POST', data);
+      const send_data = { ...data, imageUrls: imageUrls };
+      const response = await fetchWithAuth(apiUrl, 'POST', send_data);
     } catch (error) {
       alert('エラー:' + error);
       setSendLoading(false);
     } finally {
       router.push(`/organization/${params.id}/event`);
     }
+  };
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSendLoading(true);
+    const files = event.target.files;
+    if (!files) return;
+
+    for (let i = 0; i < files.length; i++) {
+      const formData = new FormData();
+      formData.append('file', files[i]);
+
+      try {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/image`, 'POST', formData);
+        setImageUrls(prevUrls => [...prevUrls, response['image']]);
+      } catch (error) {
+        alert('画像アップロードエラー:' + error);
+      }
+    }
+    setSendLoading(false);
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImageUrls(prevUrls => prevUrls.filter((_, i) => i !== index));
   };
 
   return (
@@ -138,6 +164,29 @@ export default function Event({ params }: { params: { id: string }}) {
                     className='my-4 p-4 border-2 rounded-lg w-full'
                   />
                   {errors.end?.message && <div>{errors.end.message}</div>}
+                </div>
+                <div>
+                  <div className="image-previews">
+                    {imageUrls.map((url, index) => (
+                      <>
+                        <img key={index} src={url} alt={`Preview ${index}`} className="w-11/12 m-2" />
+                        <button
+                            onClick={() => handleRemoveImage(index)}
+                            className="m-4 p-2 border rounded-lg bg-red-600 text-white text-base"
+                          >
+                            <FontAwesomeIcon icon={faTrashCan} /> 画像削除
+                        </button>
+                      </>
+                    ))}
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageUpload}
+                    className='w-11/12 m-4 p-4 border-2 rounded-lg'
+                  />
+                  <input type="hidden" value={JSON.stringify(imageUrls)} {...register('imageUrls')} />
                 </div>
                 <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'><FontAwesomeIcon icon={faPaperPlane} /> 作成</button>
               </form>

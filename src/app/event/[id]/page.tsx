@@ -24,6 +24,7 @@ export default function Event({ params }: { params: { id: string }}) {
     const [data, setData] = useState<Event[]>([]);
     const [status, setStatus] = useState(0);
 	const [loading, setLoading] = useState(true);
+    const [image, setImage] = useState<string[]>([]);
     const [formattedDescription, setFormattedDescription] = useState<JSX.Element[] | null>(null);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL + '/event/' + params.id;
     const csrftoken = Cookies.get('csrftoken') || '';
@@ -41,6 +42,7 @@ export default function Event({ params }: { params: { id: string }}) {
         if (contentType && contentType.includes('application/json')) {
             const data = await response.json();
             setData(data['event']);
+            setImage(data['image']);
             setStatus(response.status);
             setNow(new Date(data['now']));
         }
@@ -86,6 +88,9 @@ export default function Event({ params }: { params: { id: string }}) {
                                     <h3 className="text-base mb-2">{data[0]['title']}</h3>
                                     <p className="text-xs text-gray-700">@{data[0]['place']}</p>
                                     <p className='text-sm my-5'>{formattedDescription}</p>
+                                    {image.map((img, index) => (
+                                        <img key={index} src={img} className="w-full h-auto my-6" />
+                                    ))}
                                     <p className="text-xs my-1.5 text-gray-700"><FontAwesomeIcon icon={faUser} /> {data[0]['user__username']}　<FontAwesomeIcon icon={faBuilding} /> {data[0]['organization__name']}</p>
                                 </>
                             ) : (
