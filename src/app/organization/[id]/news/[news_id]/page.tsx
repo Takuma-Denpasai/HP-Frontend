@@ -3,7 +3,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faNewspaper, faPaperPlane, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { fetchWithAuth } from '@/utils/api';
@@ -20,6 +20,7 @@ interface News {
   user__username: string;
   created_at: string;
   updated_at: string;
+  images__image__image: string[];
 }
 
 export default function News({ params }: { params: { id: string, news_id: string }}) {
@@ -27,6 +28,7 @@ export default function News({ params }: { params: { id: string, news_id: string
   const [sendLoading, setSendLoading] = useState(false);
   const [newsData, setNewsData] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/news/${params.news_id}`;
 
   type LoginDataType = {
@@ -34,6 +36,7 @@ export default function News({ params }: { params: { id: string, news_id: string
     detail: string;
     show_top: boolean;
     important: boolean;
+    imageUrls: string;
   };
 
   const router = useRouter();
@@ -53,7 +56,8 @@ export default function News({ params }: { params: { id: string, news_id: string
     const csrftoken = Cookies.get('csrftoken') || '';
     
     try {
-      const response = await fetchWithAuth(apiUrl, 'POST', data);
+      const send_data = { ...data, imageUrls: imageUrls };
+      const response = await fetchWithAuth(apiUrl, 'POST', send_data);
     } catch (error) {
       console.error('エラー:', error);
       alert('エラー:' + error);
@@ -67,6 +71,11 @@ export default function News({ params }: { params: { id: string, news_id: string
 				try {
 						const data = await fetchWithAuth(apiUrl, 'GET');
             setNewsData(data['news']);
+            if (data['image']) {
+              setImageUrls(data['image']);
+            } else {
+              setImageUrls([]);
+            }
 				} catch (error) {
 						console.error('データ取得エラー:', error);
 				} finally {
@@ -76,6 +85,29 @@ export default function News({ params }: { params: { id: string, news_id: string
 
 		fetchData();
 }, []);
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSendLoading(true);
+    const files = event.target.files;
+    if (!files) return;
+
+    for (let i = 0; i < files.length; i++) {
+      const formData = new FormData();
+      formData.append('file', files[i]);
+
+      try {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/image`, 'POST', formData);
+        setImageUrls(prevUrls => [...prevUrls, response['image']]);
+      } catch (error) {
+        alert('画像アップロードエラー:' + error);
+      }
+    }
+    setSendLoading(false);
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImageUrls(prevUrls => prevUrls.filter((_, i) => i !== index));
+  };
 
   return (
     <main>
@@ -140,6 +172,30 @@ export default function News({ params }: { params: { id: string, news_id: string
                   />
                   <label className='text-base'>重要なお知らせへ表示</label>
                   {errors.show_top?.message && <div>{errors.show_top.message}</div>}
+                </div>
+                <div>
+                  <div className="image-previews">
+                    {imageUrls.map((url, index) => (
+                      <>
+                        <img key={index} src={url} alt={`Preview ${index}`} className="w-11/12 m-2" />
+                        <button
+                            type='button'
+                            onClick={() => handleRemoveImage(index)}
+                            className="m-4 p-2 border rounded-lg bg-red-600 text-white text-base"
+                          >
+                            <FontAwesomeIcon icon={faTrashCan} /> 画像削除
+                        </button>
+                      </>
+                    ))}
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageUpload}
+                    className='w-11/12 m-4 p-4 border-2 rounded-lg'
+                  />
+                  <input type="hidden" value={JSON.stringify(imageUrls)} {...register('imageUrls')} />
                 </div>
                 <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'><FontAwesomeIcon icon={faPaperPlane} /> 編集</button>
               </form>

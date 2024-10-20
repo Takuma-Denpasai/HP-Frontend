@@ -6,21 +6,20 @@ import { refreshAccessToken, getAccessToken, clearAccessToken, clearRefreshToken
  * @returns APIからのレスポンスデータ
  * @throws リクエストが失敗した場合にエラーをスロー
  */
-export const fetchWithAuth = async (url: string, method: string, body_data?: {}): Promise<any> => {
+export const fetchWithAuth = async (url: string, method: string, body_data?: any): Promise<any> => {
     try {
         let accessToken = getAccessToken();
 
         let fetchData: any = {
           method: method,
           headers: {
-              'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + accessToken,
           },
-          body: JSON.stringify(body_data),
-        }
-        if (body_data !== undefined) {
-          fetchData['headers']['Content-Type'] = 'application/x-www-form-urlencoded';
-          fetchData['body'] = new URLSearchParams(body_data);
+          body: body_data instanceof FormData ? body_data : JSON.stringify(body_data),
+        };
+
+        if (!(body_data instanceof FormData)) {
+          fetchData.headers['Content-Type'] = 'application/json';
         }
 
         let response: any = await fetch(url, fetchData);

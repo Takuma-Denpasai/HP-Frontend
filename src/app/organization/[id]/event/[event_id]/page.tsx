@@ -26,6 +26,7 @@ export default function Event({ params }: { params: { id: string, event_id: stri
   const [sendLoading, setSendLoading] = useState(false);
   const [eventData, setEventData] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/event/${params.event_id}`;
 
   type LoginDataType = {
@@ -34,6 +35,7 @@ export default function Event({ params }: { params: { id: string, event_id: stri
     detail: string;
     start: Date;
     end: Date;
+    imageUrls: string;
   };
 
   const router = useRouter();
@@ -53,7 +55,8 @@ export default function Event({ params }: { params: { id: string, event_id: stri
     const csrftoken = Cookies.get('csrftoken') || '';
     
     try {
-      const response = await fetchWithAuth(apiUrl, 'POST', data);
+      const send_data = { ...data, imageUrls: imageUrls };
+      const response = await fetchWithAuth(apiUrl, 'POST', send_data);
       router.push(`/organization/${params.id}/event`);
     } catch (error) {
       alert('エラー:' + error);
@@ -67,6 +70,11 @@ export default function Event({ params }: { params: { id: string, event_id: stri
 				try {
 						const data = await fetchWithAuth(apiUrl, 'GET');
             setEventData(data['event']);
+            if (data['image']) {
+              setImageUrls(data['image']);
+            } else {
+              setImageUrls([]);
+            }
 				} catch (error) {
 						console.error('データ取得エラー:', error);
 				} finally {
@@ -76,6 +84,29 @@ export default function Event({ params }: { params: { id: string, event_id: stri
 
 		fetchData();
 }, []);
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSendLoading(true);
+    const files = event.target.files;
+    if (!files) return;
+
+    for (let i = 0; i < files.length; i++) {
+      const formData = new FormData();
+      formData.append('file', files[i]);
+
+      try {
+        const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/image`, 'POST', formData);
+        setImageUrls(prevUrls => [...prevUrls, response['image']]);
+      } catch (error) {
+        alert('画像アップロードエラー:' + error);
+      }
+    }
+    setSendLoading(false);
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImageUrls(prevUrls => prevUrls.filter((_, i) => i !== index));
+  };
 
   return (
     <main>
@@ -177,13 +208,37 @@ export default function Event({ params }: { params: { id: string, event_id: stri
                   />
                   {errors.end?.message && <div>{errors.end.message}</div>}
                 </div>
+                <div>
+                  <div className="image-previews">
+                    {imageUrls.map((url, index) => (
+                      <>
+                        <img key={index} src={url} alt={`Preview ${index}`} className="w-11/12 m-2" />
+                        <button
+                            type='button'
+                            onClick={() => handleRemoveImage(index)}
+                            className="m-4 p-2 border rounded-lg bg-red-600 text-white text-base"
+                          >
+                            <FontAwesomeIcon icon={faTrashCan} /> 画像削除
+                        </button>
+                      </>
+                    ))}
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageUpload}
+                    className='w-11/12 m-4 p-4 border-2 rounded-lg'
+                  />
+                  <input type="hidden" value={JSON.stringify(imageUrls)} {...register('imageUrls')} />
+                </div>
                 <button type="submit" className='m-6 p-4 border rounded-lg bg-gray-600 text-white'><FontAwesomeIcon icon={faPaperPlane} /> 編集</button>
               </form>
             </div>
           </div>
           )}
           <Link href={`/organization/${params.id}/event/${params.event_id}/delete`} className='bg-white-100'>
-            <p className='text-center text-red-400 text-lg my-4'><FontAwesomeIcon icon={faTrashCan} /> お知らせを削除</p>
+            <p className='text-center text-red-400 text-lg my-4'><FontAwesomeIcon icon={faTrashCan} /> イベントを削除</p>
           </Link>
         </div>
       </main>

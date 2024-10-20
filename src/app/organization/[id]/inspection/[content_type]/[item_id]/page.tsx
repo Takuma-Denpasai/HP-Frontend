@@ -94,6 +94,7 @@ export default function News({ params }: { params: { id: string, content_type: s
   const [band, setBand] = useState<Band[]>([]);
   const [bandSong, setBandSong] = useState<BandSong[]>([]);
   const [loading, setLoading] = useState(true);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const url = process.env.NEXT_PUBLIC_API_URL + `/organization/${params.id}/inspection/${params.content_type}/${params.item_id}`;
   
   useEffect(() => {
@@ -110,6 +111,7 @@ export default function News({ params }: { params: { id: string, content_type: s
             setKaraoke(data['karaoke']);
             setBand(data['band']);
             setBandSong(data['band_song']);
+            setImageUrls(data['imageUrls']);
 				} catch (error) {
 						console.error('データ取得エラー:', error);
 				} finally {
@@ -250,6 +252,9 @@ const handleDeny = async (event: React.FormEvent) => {
                     <p className="text-xs my-1.5 text-gray-700">{bandSong['song__band__name']}</p>
                   </div>
                 </Link>
+              ))}
+              {imageUrls && imageUrls.map((imageUrl, index) => (
+                <img key={index} src={imageUrl} className="w-full h-auto my-6" />
               ))}
             </div>
             <div className='text-center'>
