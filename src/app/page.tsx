@@ -1,14 +1,16 @@
 "use client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPalette, faNewspaper, faUser, faUserGroup, faShop, faCalendar, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faPalette, faNewspaper, faUser, faUserGroup, faShop, faCalendar, faChevronRight, faCircleStop, faCirclePlay, faClock } from "@fortawesome/free-solid-svg-icons";
 import { ImportantNews } from "@/components/ImportantNews";
 import { useState, useEffect } from "react";
 import { Loading } from "@/components/Loading";
 import Link from "next/link";
 import Cookies from 'js-cookie';
+import { set } from "react-hook-form";
 
 export default function Top() {
+	const [now, setNow] = useState(new Date());
 	const [newsData, setNewsData] = useState([]);
 	const [eventData, setEventData] = useState([]);
 	const [newsLoading, setNewsLoading] = useState(true);
@@ -43,6 +45,7 @@ export default function Top() {
 		if (contentType && contentType.includes('application/json')) {
 				const data = await response.json();
 				setEventData(data['event']);
+				setNow(new Date(data['now']));
 		}
 		setEventLoading(false);
 };
@@ -140,8 +143,13 @@ export default function Top() {
 							eventData.map((event) => (
 							<Link key={event['id']} href={`/event/${event['id']}`}>
 								<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
-									<p className="text-xs my-1.5">{new Date(event['start']).toLocaleTimeString('ja-JP')}~　<span className="text-green-500">● 進行中</span></p>
-									<h3 className="text-base">{event['title']} <span className="text-gray-600">{event['place']}</span></h3>
+									<p className="text-xs my-1.5 text-gray-700">
+										{new Date(event['start']).toLocaleDateString('ja-JP')} {new Date(event['start']).toLocaleTimeString('ja-JP', {hour: '2-digit', minute:'2-digit'})} ~ {new Date(event['end']).toLocaleTimeString('ja-JP', {hour: '2-digit', minute:'2-digit'})}
+										{new Date(event['start']) < now && now < new Date(event['end']) && <span className="text-green-600">　<FontAwesomeIcon icon={faCirclePlay} /> 進行中</span>}
+										{now < new Date(event['start']) && now < new Date(event['end']) && <span className="text-gray-600">　<FontAwesomeIcon icon={faClock} /> 開始前</span>}
+										{new Date(event['start']) < now && new Date(event['end']) < now && <span className="text-red-600">　<FontAwesomeIcon icon={faCircleStop} /> 終了済み</span>}
+									</p>
+									<h3 className="text-base">{event['title']} <span className="text-gray-600">@{event['place']}</span></h3>
 								</div>
 							</Link>
 							)): <div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">

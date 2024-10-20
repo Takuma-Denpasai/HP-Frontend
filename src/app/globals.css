@@ -46,6 +46,10 @@ main {
   min-height: 78vh;
 }
 
+.bg-gray-800-opacity {
+  background-color: rgba(66, 66, 66, 0.5);
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
