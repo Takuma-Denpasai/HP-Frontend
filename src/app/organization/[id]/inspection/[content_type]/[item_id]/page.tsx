@@ -254,7 +254,9 @@ const handleDeny = async (event: React.FormEvent) => {
                 </Link>
               ))}
               {imageUrls && imageUrls.map((imageUrl, index) => (
-                <img key={index} src={imageUrl} className="w-full h-auto my-6" />
+                  <div key={index} className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
+                    <img src={imageUrl} className="w-full h-auto my-6" />
+                  </div>
               ))}
             </div>
             <div className='text-center'>
