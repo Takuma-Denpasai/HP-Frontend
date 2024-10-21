@@ -63,7 +63,8 @@ function SearchParamsComponent() {
 		{organizationLoading && <Loading />}
 		{status === 404 && (
 			<div className="w-full p-4 bg-white rounded-lg py-6 my-4 hover:text-gray-600 transition duration-100">
-				<p className="text-sm">オーガナイゼーションがありません</p>
+				<p className="text-sm my-2">オーガナイゼーションが見つかりませんでした</p>
+				<p className="text-xs my-2">※既にオーガナイゼーションへ加入している場合は、再読み込みや再ログインをお試しください。</p>
 			</div>
 		)}
 		{organizationData.map((organization) => (	
