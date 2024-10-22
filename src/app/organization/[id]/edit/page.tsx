@@ -43,7 +43,7 @@ export default function News({ params }: { params: { id: string }}) {
       console.error('エラー:', error);
       alert('エラー:' + error);
     } finally {
-      router.push(`/organization/${params.id}/news`);
+      router.push(`/organization/${params.id}`);
     }
   };
 
